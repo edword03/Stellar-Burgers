@@ -3,7 +3,7 @@ import styles from './burger-constructor.module.css';
 import PropTypes from 'prop-types';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-export const BurgerCard = ({ image, price, name }, ...props) => {
+export const BurgerCard = ({ image, price, name, ...props }) => {
   return (
     <article className={styles.cart}>
       <Counter count={1} />
@@ -21,7 +21,7 @@ export const BurgerCard = ({ image, price, name }, ...props) => {
 
 
 BurgerCard.propTypes = {
-  image: PropTypes.string,
-  price: PropTypes.number,
-  name: PropTypes.string,
+  image: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
 };

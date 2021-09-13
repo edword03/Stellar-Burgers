@@ -19,6 +19,8 @@
   justify-content: flex-end;
 }
 
+
+
 @media screen and (max-width: 900px) {
   .ingredientBlock {
     max-width: 600px;
@@ -28,5 +30,10 @@
   .price {
     justify-content: center;
     margin-bottom: 20px;
+  }
+
+  .burgerBun {
+    max-width: 600px;
+    margin: 0 auto;
   }
 }

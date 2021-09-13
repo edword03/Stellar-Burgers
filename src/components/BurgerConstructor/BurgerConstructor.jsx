@@ -2,7 +2,7 @@ import React from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ConstructorStyles from './burger-constructor.module.css';
 import { bunsList, sauceList } from '../../utils/constructor';
-import { ConstructorBlock } from './constructor-block';
+import { ConstructorBlock } from './constructorBlock';
 
 export const BurgerConstructor = () => {
   const [currentTab, setCurrentTab] = React.useState('one');
