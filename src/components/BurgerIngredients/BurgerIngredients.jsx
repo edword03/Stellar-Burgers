@@ -1,10 +1,10 @@
 import React from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import ConstructorStyles from './burger-constructor.module.css';
+import ConstructorStyles from './burgerIngredients.module.css';
 import { bunsList, sauceList } from '../../utils/constructor';
-import { ConstructorBlock } from './constructorBlock';
+import { IngredientBlock } from './IngredientBlock';
 
-export const BurgerConstructor = () => {
+export const BurgerIngredients = () => {
   const [currentTab, setCurrentTab] = React.useState('one');
 
   return (
@@ -22,8 +22,8 @@ export const BurgerConstructor = () => {
         </Tab>
       </div>
       <main className={`${ConstructorStyles.main} custom-scroll`}>
-        <ConstructorBlock title="Булки" list={bunsList} />
-        <ConstructorBlock title="Соусы" list={sauceList} />
+        <IngredientBlock title="Булки" list={bunsList} />
+        <IngredientBlock title="Соусы" list={sauceList} />
       </main>
     </section>
   );

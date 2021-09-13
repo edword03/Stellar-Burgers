@@ -1,10 +1,10 @@
 import React from 'react';
-import styles from './burger-constructor.module.css';
+import styles from './burgerIngredients.module.css';
 import { BurgerCard } from './BurgerCard';
 import PropTypes from 'prop-types';
 
 
-export const ConstructorBlock = ({ list = [], title }) => {
+export const IngredientBlock = ({ list = [], title }) => {
   return (
     <div className={`mt-10 mb-10`}>
       <h3 className={`mb-6 text text_type_main-medium`}>{title}</h3>
@@ -15,7 +15,7 @@ export const ConstructorBlock = ({ list = [], title }) => {
   );
 };
 
-ConstructorBlock.propTypes = {
+IngredientBlock.propTypes = {
   list: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired
 };

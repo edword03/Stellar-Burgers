@@ -6,7 +6,7 @@ import {
   ListIcon,
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import headerStyles from './header.module.css';
+import headerStyles from './AppHeader.module.css';
 
 export const AppHeader = () => {
   const [menu, setMenu] = React.useState(false);

@@ -1,9 +1,9 @@
 import React from 'react';
-import BurgerIngredientStyles from './burger-ingredient.module.css';
+import BurgerIngredientStyles from './BurgerConstructor.module.css';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 
-export const IngredientItem = ({ name, price, image, isLocked = true, type, children }) => {
+export const BurgerConstructorItem = ({ name, price, image, isLocked = true, type, children }) => {
   return (
     <article
       className={`${BurgerIngredientStyles.burgerItem} ${BurgerIngredientStyles.burgerBun} mt-1`}>
@@ -19,7 +19,7 @@ export const IngredientItem = ({ name, price, image, isLocked = true, type, chil
   );
 };
 
-IngredientItem.propTypes = {
+BurgerConstructorItem.propTypes = {
   name: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   image: PropTypes.string.isRequired,

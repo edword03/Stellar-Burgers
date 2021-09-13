@@ -1,15 +1,15 @@
 import React from 'react';
-import BurgerIngredientStyles from './burger-ingredient.module.css';
+import BurgerIngredientStyles from './BurgerConstructor.module.css';
 import { DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { listBurgers } from '../../utils/data';
-import { IngredientItem } from './IngredientItem';
+import { BurgerConstructorItem } from './BurgerConstructorItem';
 
-export const BurgerIngredient = () => {
+export const BurgerConstructor = () => {
   const price = listBurgers.reduce((acc, cur) => acc + cur.price, 0);
 
   return (
     <section className={`mt-25 pr-4 pl-4`}>
-      <IngredientItem
+      <BurgerConstructorItem
         name={listBurgers[0].name + '(верх)'}
         image={listBurgers[0].image}
         price={listBurgers[0].price}
@@ -19,18 +19,18 @@ export const BurgerIngredient = () => {
         {listBurgers ? (
           listBurgers.map((item, i) =>
             i !== 0 && i !== listBurgers.length - 1 ? (
-              <IngredientItem {...item} isLocked={false} key={item._id}>
+              <BurgerConstructorItem {...item} isLocked={false} key={item._id}>
                 <div className="mr-2">
                   <DragIcon />
                 </div>
-              </IngredientItem>
+              </BurgerConstructorItem>
             ) : null,
           )
         ) : (
           <p>Не найдено</p>
         )}
       </div>
-      <IngredientItem
+      <BurgerConstructorItem
         name={listBurgers[0].name + '(низ)'}
         image={listBurgers[0].image}
         price={listBurgers[0].price}
