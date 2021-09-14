@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './burgerIngredients.module.css';
+import styles from './BurgerIngredients.module.css';
 import { BurgerCard } from './BurgerCard';
 import PropTypes from 'prop-types';
 
