@@ -1,0 +1,39 @@
+.ingredientBlock {
+  overflow-y: auto;
+  height: 670px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.burgerItem {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: space-between;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+
+
+@media screen and (max-width: 900px) {
+  .ingredientBlock {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .price {
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .burgerBun {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}

@@ -1,0 +1,82 @@
+.header {
+  box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
+}
+
+.container {
+  margin: 16px auto;
+  max-width: 1300px;
+  width: 100%;
+}
+
+.headerWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 385px;
+}
+
+.linksItem {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  color: #8585AD;
+}
+
+.linkText {
+  margin-left: 8px;
+}
+
+.activeLink {
+  color: #F2F2F3 !important;
+}
+
+.personal {
+  display: flex;
+  align-items: center;
+}
+
+.mobileMenu {
+  position: relative;
+  cursor: pointer;
+  display: none;
+}
+
+.mobileDropdown {
+  position: absolute;
+  box-shadow: 0px 24px 32px rgb(0 0 0 / 4%), 0px 16px 24px rgb(0 0 0 / 4%), 0px 4px 8px rgb(0 0 0 / 4%), 0px 0px 1px rgb(0 0 0 / 4%);
+  border-radius: 8px;
+  background-color: #2F2F37;
+  right: 0;
+}
+
+.linkMobile {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  color: #8585AD;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen and (max-width: 900px) {
+  .links, .linksItem {
+    display: none;
+  }
+
+  .mobileMenu {
+    display: block;
+  }
+
+  .container {
+    width: 95%;
+  }
+}

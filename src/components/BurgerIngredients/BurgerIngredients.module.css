@@ -1,0 +1,62 @@
+.burgerConstructor {
+  max-width: 610px;
+  width: 100%;
+}
+
+.title {
+  color: #f2f2f3;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 40px;
+}
+
+.tabs {
+  display: flex;
+}
+
+.main {
+  overflow-y: auto;
+  height: 715px;
+}
+
+.cart {
+  max-width: 272px;
+  position: relative;
+  cursor: pointer;
+}
+
+.col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 24px;
+  grid-row-gap: 32px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Iceland', sans-serif;
+  font-size: 24px;
+}
+
+@media screen and (max-width: 1200px) {
+  .tabs {
+    display: block;
+  }
+  
+  .col {
+    grid-template-columns: 1fr;
+    justify-content: center;
+  }
+
+  .cart {
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .burgerConstructor {
+    max-width: none;
+  }
+}
