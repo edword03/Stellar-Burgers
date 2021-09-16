@@ -1,0 +1,19 @@
+.acceptedBlock {
+  max-width: 120px;
+  height: 120px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.acceptedImg {
+  width: 100%;
+  height: auto;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.subtitle {
+  color: #8585AD;
+}

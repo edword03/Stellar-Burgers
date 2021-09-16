@@ -1,0 +1,28 @@
+.modal {
+  max-width: 720px;
+  width: 100%;
+  background: #1c1c21;
+  border: 1px solid rgba(76, 76, 255, 0.2);
+  box-sizing: border-box;
+
+  box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
+    0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
+  border-radius: 40px;
+  z-index: 1;
+}
+
+.headDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headOrder {
+  composes: headDetails;
+  justify-content: flex-end;
+}
+
+.content {
+  max-width: 520px;
+  margin: 0 auto;
+}

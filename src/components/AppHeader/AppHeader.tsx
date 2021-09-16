@@ -16,7 +16,7 @@ export const AppHeader = () => {
   };
 
   return (
-    <header className={headerStyles.header}>
+    <header className={`${headerStyles.header} pt-4 pb-4`}>
       <div className={headerStyles.container}>
         <nav className={headerStyles.headerWrapper}>
           <ul className={headerStyles.links}>

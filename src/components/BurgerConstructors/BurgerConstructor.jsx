@@ -1,51 +1,52 @@
 import React from 'react';
 import BurgerIngredientStyles from './BurgerConstructor.module.css';
 import { DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { listBurgers } from '../../utils/data';
 import { BurgerConstructorItem } from './BurgerConstructorItem';
+import PropTypes from 'prop-types';
+import { OrderDetails } from '../OrderDetails';
 
-export const BurgerConstructor = () => {
-  const price = listBurgers.reduce((acc, cur) => acc + cur.price, 0);
+export const BurgerConstructor = ({ data = [] }) => {
+  const [isModal, setIsModal] = React.useState(false)
+
+  const toggleModal = () => setIsModal(prev => !prev)
+  const sortIngredients = data.filter(item => item.type !== 'bun');
+  const price = data.reduce((acc, cur) => acc + cur.price, 0);
+  const sortBuns = data.filter(item => item.type === 'bun')[0];
 
   return (
-    <section className={`mt-25 pr-4 pl-4`}>
-      <BurgerConstructorItem
-        name={listBurgers[0].name + '(верх)'}
-        image={listBurgers[0].image}
-        price={listBurgers[0].price}
-        type={'top'}
-      />
-      <div className={`${BurgerIngredientStyles.ingredientBlock} custom-scroll`}>
-        {listBurgers ? (
-          listBurgers.map((item, i) =>
-            i !== 0 && i !== listBurgers.length - 1 ? (
+    <>
+      <section className={`mt-25 pr-4 pl-4`}>
+        <BurgerConstructorItem {...sortBuns} type={'top'} />
+        <div className={`${BurgerIngredientStyles.ingredientBlock} custom-scroll`}>
+          {sortIngredients ? (
+            sortIngredients.map((item, i) => (
               <BurgerConstructorItem {...item} isLocked={false} key={item._id}>
                 <div className="mr-2">
                   <DragIcon />
                 </div>
               </BurgerConstructorItem>
-            ) : null,
-          )
-        ) : (
-          <p>Не найдено</p>
-        )}
-      </div>
-      <BurgerConstructorItem
-        name={listBurgers[0].name + '(низ)'}
-        image={listBurgers[0].image}
-        price={listBurgers[0].price}
-        type={'bottom'}
-      />
+            ))
+          ) : (
+            <p>Не найдено</p>
+          )}
+        </div>
+        <BurgerConstructorItem {...sortBuns} type={'bottom'} />
 
-      <div className={`mt-10 ${BurgerIngredientStyles.price}`}>
-        <p className={`mr-10`}>
-          <span className="mr-2 text text_type_digits-medium">{price}</span>
-          <CurrencyIcon />
-        </p>
-        <Button type="primary" size="large">
-          Оформить заказ
-        </Button>
-      </div>
-    </section>
+        <div className={`mt-10 ${BurgerIngredientStyles.price}`}>
+          <p className={`mr-10`}>
+            <span className="mr-2 text text_type_digits-medium">{price}</span>
+            <CurrencyIcon />
+          </p>
+          <Button type="primary" size="large" onClick={toggleModal}>
+            Оформить заказ
+          </Button>
+        </div>
+      </section>
+      {isModal && <OrderDetails isModal={isModal} onClick={toggleModal} />}
+    </>
   );
+};
+
+BurgerConstructor.propTypes = {
+  data: PropTypes.array,
 };
