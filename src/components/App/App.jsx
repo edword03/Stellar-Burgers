@@ -12,7 +12,12 @@ export function App() {
 
   useEffect(() => {
     fetch(urlApi)
-      .then(res => res.json())
+      .then(res => {
+        if (res.ok) {
+          return res.json()
+        }
+        throw new Error('Error')
+      })
       .then(data => setData(data.data))
       .catch(err => {
         console.error(err);

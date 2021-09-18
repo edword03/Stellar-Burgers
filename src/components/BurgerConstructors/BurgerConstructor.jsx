@@ -3,12 +3,13 @@ import BurgerIngredientStyles from './BurgerConstructor.module.css';
 import { DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { BurgerConstructorItem } from './BurgerConstructorItem';
 import PropTypes from 'prop-types';
+import { Modal } from '../Modal';
 import { OrderDetails } from '../OrderDetails';
 
 export const BurgerConstructor = ({ data = [] }) => {
-  const [isModal, setIsModal] = React.useState(false)
+  const [isModal, setIsModal] = React.useState(false);
 
-  const toggleModal = () => setIsModal(prev => !prev)
+  const toggleModal = () => setIsModal(prev => !prev);
   const sortIngredients = data.filter(item => item.type !== 'bun');
   const price = data.reduce((acc, cur) => acc + cur.price, 0);
   const sortBuns = data.filter(item => item.type === 'bun')[0];
@@ -42,7 +43,11 @@ export const BurgerConstructor = ({ data = [] }) => {
           </Button>
         </div>
       </section>
-      {isModal && <OrderDetails isModal={isModal} onClick={toggleModal} />}
+      {isModal && (
+        <Modal onClose={toggleModal} paddingBottom="pb-30">
+          <OrderDetails />
+        </Modal>
+      )}
     </>
   );
 };

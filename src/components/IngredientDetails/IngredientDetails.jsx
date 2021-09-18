@@ -1,20 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { Modal } from '../Modal';
 import detailsStyles from './IngredientDetails.module.css';
 
 export const IngredientDetails = ({
-  name,
-  onClose,
-  image_large,
-  proteins,
-  calories,
-  carbohydrates,
-  fat,
+  data: { name, image_large, proteins, calories, carbohydrates, fat },
 }) => {
-  return ReactDOM.createPortal(
-    <Modal onClose={onClose} title={'Детали ингредиента'}>
+  return (
+    <>
       <div className={detailsStyles.imgContainer}>
         <img src={image_large} alt={name} />
       </div>
@@ -45,8 +37,7 @@ export const IngredientDetails = ({
           </span>
         </p>
       </div>
-    </Modal>,
-    document.getElementById('root-modal'),
+    </>
   );
 };
 
