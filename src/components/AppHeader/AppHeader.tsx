@@ -16,20 +16,20 @@ export const AppHeader = () => {
   };
 
   return (
-    <header className={headerStyles.header}>
+    <header className={`${headerStyles.header} pt-4 pb-4`}>
       <div className={headerStyles.container}>
         <nav className={headerStyles.headerWrapper}>
           <ul className={headerStyles.links}>
             <li>
               <a href="/" className={`${headerStyles.activeLink} ${headerStyles.linksItem}`}>
                 <BurgerIcon type="primary" />
-                <span className={headerStyles.linkText}>Конструктор</span>
+                <span className={`${headerStyles.linkText} text text_type_main-default`}>Конструктор</span>
               </a>
             </li>
             <li>
               <a href="/" className={headerStyles.linksItem}>
                 <ListIcon type="secondary" />
-                <span className={headerStyles.linkText}>Лента заказов</span>
+                <span className={`${headerStyles.linkText} text text_type_main-default`}>Лента заказов</span>
               </a>
             </li>
           </ul>
@@ -40,7 +40,7 @@ export const AppHeader = () => {
 
           <a href="/" className={headerStyles.linksItem}>
             <ProfileIcon type="secondary" />
-            <span className={headerStyles.linkText}>Личный кабинет</span>
+            <span className={`${headerStyles.linkText} text text_type_main-default`}>Личный кабинет</span>
           </a>
           
           <div className={headerStyles.mobileMenu}>
@@ -49,19 +49,19 @@ export const AppHeader = () => {
               <li>
                 <a href="/" className={`${headerStyles.activeLink} ${headerStyles.linkMobile}`}>
                   <BurgerIcon type="primary" />
-                  <span className={headerStyles.linkText}>Конструктор</span>
+                  <span className={`${headerStyles.linkText} text text_type_main-default`}>Конструктор</span>
                 </a>
               </li>
               <li>
                 <a href="/" className={headerStyles.linkMobile}>
                   <ListIcon type="secondary" />
-                  <span className={headerStyles.linkText}>Лента заказов</span>
+                  <span className={`${headerStyles.linkText} text text_type_main-default`}>Лента заказов</span>
                 </a>
               </li>
               <li>
                 <a href="/" className={headerStyles.linkMobile}>
                   <ProfileIcon type="secondary" />
-                  <span className={headerStyles.linkText}>Личный кабинет</span>
+                  <span className={`${headerStyles.linkText} text text_type_main-default`}>Личный кабинет</span>
                 </a>
               </li>
             </ul>

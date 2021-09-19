@@ -1,0 +1,40 @@
+.headDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.content {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.imgContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.title {
+  text-align: center;
+}
+
+.nurtions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nurtionText {
+  max-width: 120px;
+  font-size: 16px;
+  line-height: 24px;
+
+  text-align: center;
+
+  color: #8585ad;
+}
+
+.nurtionValue {
+  display: block;
+  margin-top: 8px;
+}
