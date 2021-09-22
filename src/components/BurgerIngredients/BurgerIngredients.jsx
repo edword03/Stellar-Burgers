@@ -1,21 +1,23 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useContext } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ConstructorStyles from './BurgerIngredients.module.css';
 import { IngredientBlock } from './IngredientBlock';
-import PropTypes from 'prop-types';
 import { Modal } from '../Modal';
 import { IngredientDetails } from '../IngredientDetails';
+import { Context } from '../../services/Context';
 
-export const BurgerIngredients = ({ data = [] }) => {
+export const BurgerIngredients = () => {
   const [isModal, setIsModal] = React.useState(false);
-  const [currentIngredient, setCurrentIngredient] = React.useState({})
+  const [currentIngredient, setCurrentIngredient] = React.useState({});
   const [currentTab, setCurrentTab] = React.useState('one');
 
-  const setModalProps = (props) => {
-    setCurrentIngredient(props)
+  const { data } = useContext(Context);
+
+  const setModalProps = props => {
+    setCurrentIngredient(props);
   };
-  
-  const closeModal = () =>  setIsModal(false)
+
+  const closeModal = () => setIsModal(false);
 
   const sortBuns = useMemo(() => data.filter(item => item.type === 'bun'), [data]);
   const sortMain = useMemo(() => data.filter(item => item.type === 'main'), [data]);
@@ -37,9 +39,24 @@ export const BurgerIngredients = ({ data = [] }) => {
           </Tab>
         </div>
         <main className={`${ConstructorStyles.main} custom-scroll`}>
-          <IngredientBlock title="Булки" list={sortBuns} onClick={setIsModal} setModalDate={setModalProps} />
-          <IngredientBlock title="Соусы" list={sortSause} onClick={setIsModal} setModalDate={setModalProps} />
-          <IngredientBlock title="Начинки" list={sortMain} onClick={setIsModal} setModalDate={setModalProps} />
+          <IngredientBlock
+            title="Булки"
+            list={sortBuns}
+            onClick={setIsModal}
+            setModalDate={setModalProps}
+          />
+          <IngredientBlock
+            title="Соусы"
+            list={sortSause}
+            onClick={setIsModal}
+            setModalDate={setModalProps}
+          />
+          <IngredientBlock
+            title="Начинки"
+            list={sortMain}
+            onClick={setIsModal}
+            setModalDate={setModalProps}
+          />
         </main>
       </section>
       {isModal && (
@@ -51,13 +68,3 @@ export const BurgerIngredients = ({ data = [] }) => {
   );
 };
 
-const arrayData = PropTypes.shape({
-  image: PropTypes.string,
-  name: PropTypes.string,
-  type: PropTypes.string,
-  price: PropTypes.number,
-});
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(arrayData),
-};
