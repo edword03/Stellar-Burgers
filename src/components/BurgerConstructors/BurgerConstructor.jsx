@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import BurgerIngredientStyles from './BurgerConstructor.module.css';
 import { DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { BurgerConstructorItem } from './BurgerConstructorItem';
@@ -57,8 +57,8 @@ export const BurgerConstructor = () => {
       })
   }
 
-  const sortIngredients = data.filter(item => item.type !== 'bun');
-  const sortBuns = data.filter(item => item.type === 'bun')[0];
+  const sortIngredients = useMemo(() => data.filter(item => item.type !== 'bun'), [data])
+  const sortBuns = useMemo(() => data.filter(item => item.type === 'bun')[0], [data])
 
   return (
     <>
