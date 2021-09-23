@@ -1,6 +1,6 @@
 .ingredientBlock {
   overflow-y: auto;
-  height: 670px;
+  max-height: 670px;
   display: flex;
   flex-direction: column;
   gap: 16px;

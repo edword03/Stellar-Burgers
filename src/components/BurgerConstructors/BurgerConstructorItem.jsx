@@ -3,7 +3,7 @@ import BurgerIngredientStyles from './BurgerConstructor.module.css';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 
-export const BurgerConstructorItem = ({ name = '', price = 0, image = '', isLocked = true, type, children }) => {
+export const BurgerConstructorItem = ({ name = '', price = 0, image = '', isLocked = true, type, children, ...props }) => {
   return (
     <article
       className={`${BurgerIngredientStyles.burgerItem} ${BurgerIngredientStyles.burgerBun} mt-1`}>
