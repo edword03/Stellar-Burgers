@@ -1,12 +1,15 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import doneGif from '../../assets/images/order-accepted.gif';
 import orderStyles from './OrderDetails.module.css';
-import PropTypes from 'prop-types';
 
-export const OrderDetails = ({ data = {} }) => {
+export const OrderDetails = () => {
+  const number = useSelector(store => store.order.order.number)
   return (
     <>
-      <h2 className={`text text_type_digits-large mt-4 mb-8 ${orderStyles.textCenter}`}>{data.number}</h2>
+      <h2 className={`text text_type_digits-large mt-4 mb-8 ${orderStyles.textCenter}`}>
+        {number}
+      </h2>
       <p className={`text text_type_main-medium mb-15 ${orderStyles.textCenter}`}>
         идентификатор заказа
       </p>
@@ -23,9 +26,3 @@ export const OrderDetails = ({ data = {} }) => {
     </>
   );
 };
-
-OrderDetails.propTypes = {
-  data: PropTypes.shape({
-    number: PropTypes.number
-  })
-}

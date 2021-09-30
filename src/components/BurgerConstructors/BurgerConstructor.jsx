@@ -1,97 +1,164 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { sendOrder, CLOSE_ORDER } from '../../services/actions/orderAction';
+import { ADD_ITEM, ADD_BUN, REMOVE_ITEM, MOVE_ITEM } from '../../services/actions/constructorAction';
+import { useDrop } from 'react-dnd';
+
 import BurgerIngredientStyles from './BurgerConstructor.module.css';
-import { DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+
 import { BurgerConstructorItem } from './BurgerConstructorItem';
-import PropTypes from 'prop-types';
+import { DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Modal } from '../Modal';
 import { OrderDetails } from '../OrderDetails';
-
-import {Context} from '../../services/Context'
-
-const apiUrl = 'https://norma.nomoreparties.space/api/orders';
+import { Stub } from './Stub';
 
 export const BurgerConstructor = () => {
-  const [isModal, setIsModal] = React.useState(false);
-  const [orderData, setOrderData] = React.useState({})
-  const [isError, setIsError] = React.useState(false)
-
-  const {data, state, dispatch} = React.useContext(Context)
-
-  React.useEffect(() => {
-    const price = data.reduce((acc, cur) => acc + cur.price, 0);
-    dispatch({ type: 'SET', payload: price })
-  }, [data, dispatch])
-
-  const getIngredientId = (arr = []) => {
-    return {ingredients: arr.map(item => item._id)}
-  }
-  
-  const toggleModal = () => setIsModal(prev => !prev);
-
-  const sendApi = async(url) => {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(getIngredientId(data))
+  const { ingredientsConstructor, bunItems } = useSelector(store => store.counstructor);
+  const { orderFailed, isModal } = useSelector(store => store.order);
+  const [error, setError] = useState(false)
+  const bunItem = useSelector(store => store.counstructor.bunItems);
+  const dispatch = useDispatch();
+  const [{canDrop}, dropTarget] = useDrop({
+    accept: 'bun',
+    drop(item) {
+      dispatch({
+        type: ADD_BUN,
+        payload: item,
+        isLocked: true,
+      });
+    },
+    collect: monitor => ({
+      canDrop: monitor.canDrop()
     })
+  });
 
-    if (res.ok) {
-      return await res.json()
+  const [{}, secondBunRef] = useDrop({
+    accept: 'bun',
+    drop(item) {
+      dispatch({
+        type: ADD_BUN,
+        payload: item,
+        isLocked: true,
+      });
+    },
+    collect: monitor => ({
+      isHover: monitor.isOver()
+    })
+  });
+
+  const [{isHover}, ingrTarget] = useDrop({
+    accept: 'IngredientItems',
+    drop(item) {
+      dispatch({
+        type: ADD_ITEM,
+        payload: item,
+      });
+    },
+  });
+
+  const borderColor = isHover ? '3px dashed #4C4CFF' : '';
+  const moveItem = useCallback((dragIndex, hoverIdnex) => {
+    const dragItem = ingredientsConstructor[dragIndex]
+    const newItem = [...ingredientsConstructor]
+    newItem.splice(dragIndex, 1)
+    newItem.splice(hoverIdnex, 0, dragItem)
+
+    dispatch({
+      type: MOVE_ITEM,
+      payload: newItem
+    })
+  }, [ingredientsConstructor, dispatch])
+
+  const totalPrice = useMemo(
+    () => ingredientsConstructor.reduce((acc, cur) => acc + cur.price, 0) + bunItems.price * 2,
+    [ingredientsConstructor, bunItems],
+  );
+
+  const getIngredientId = (arr, id) => {
+    return { ingredients: [...arr.map(item => item._id), id] };
+  };
+
+  const closeModal = () =>
+    dispatch({
+      type: CLOSE_ORDER,
+    });
+
+  const sendOrderData = () => {
+    const orderList = getIngredientId(ingredientsConstructor, bunItems._id);
+    if (ingredientsConstructor.length > 0 && bunItems.price > 0) {
+      dispatch(sendOrder(orderList));
+      setError(false)
+    } else {
+      setError(true)
     }
 
-    throw new Error(res.status)
-  }
+    setTimeout(() => {
+      setError(false)
+    }, 2000)
+  };
 
-  const sendOrder = () => {
-    sendApi(apiUrl)
-      .then(data => {
-        setOrderData(data.order)
-        setIsModal(true)
-        console.log(data);
-      })
-      .catch(err => {
-        console.error(err)
-        setIsError(true)
-      })
-  }
+  const removeItem = id => {
+    dispatch({
+      type: REMOVE_ITEM,
+      id,
+    });
+  };
 
-  const sortIngredients = useMemo(() => data.filter(item => item.type !== 'bun'), [data])
-  const sortBuns = useMemo(() => data.filter(item => item.type === 'bun')[0], [data])
+  const errorClass = error ? '1px solid red' : ''
 
   return (
     <>
       <section className={`mt-25 pr-4 pl-4`}>
-        {sortBuns && <BurgerConstructorItem  {...sortBuns} type={'top'} name={sortBuns.name + '(верх)'} />}
-        <div className={`${BurgerIngredientStyles.ingredientBlock} custom-scroll`}>
-          {sortIngredients ? (
-            sortIngredients.map((item, i) => (
-              <BurgerConstructorItem {...item} isLocked={false} key={item._id}>
+        <div ref={ref => dropTarget(ref)}>
+          {bunItems.name ? (
+            <BurgerConstructorItem {...bunItem} typeItem={'top'} name={bunItems.name + '(верх)'} />
+          ) : (
+            <Stub type="top" errorClass={errorClass} />
+          )}
+        </div>
+        <div
+          className={`${BurgerIngredientStyles.ingredientBlock} custom-scroll`}
+          ref={ref => ingrTarget(ref)}>
+          {ingredientsConstructor.length > 0 ? (
+            ingredientsConstructor.map((item, i) => (
+              <BurgerConstructorItem
+                {...item}
+                isLocked={false}
+                key={item.itemId}
+                move={moveItem}
+                index={i}
+                ref={ingrTarget}
+                onRemove={removeItem}>
                 <div className="mr-2">
                   <DragIcon />
                 </div>
               </BurgerConstructorItem>
             ))
           ) : (
-            <p>Не найдено</p>
+            <Stub errorClass={errorClass} />
           )}
         </div>
-        {sortBuns && <BurgerConstructorItem {...sortBuns} type={'bottom'} name={sortBuns.name + '(низ)'}  />}
+        <div ref={ref => secondBunRef(ref)}>
+          {bunItems.name ? (
+            <BurgerConstructorItem {...bunItem} typeItem={'bottom'} name={bunItems.name + '(низ)'} />
+          ) : (
+            <Stub type="bottom" errorClass={errorClass} />
+          )}
+        </div>
 
         <div className={`mt-10 ${BurgerIngredientStyles.price}`}>
           <p className={`mr-10`}>
-            <span className="mr-2 text text_type_digits-medium">{state.price}</span>
+            <span className="mr-2 text text_type_digits-medium">{totalPrice}</span>
             <CurrencyIcon />
           </p>
-          <Button type="primary" size="large" onClick={sendOrder}>
+          <Button type="primary" size="large" onClick={sendOrderData}>
             Оформить заказ
           </Button>
         </div>
       </section>
-      {isModal && !isError && (
-        <Modal onClose={toggleModal} paddingBottom="pb-30">
-          <OrderDetails data={orderData} />
+      {isModal && !orderFailed && (
+        <Modal onClose={closeModal} paddingBottom="pb-30">
+          <OrderDetails />
         </Modal>
       )}
     </>

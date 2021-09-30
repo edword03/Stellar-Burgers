@@ -1,70 +1,105 @@
-import React, { useMemo, useContext } from 'react';
+import React, { useMemo, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ConstructorStyles from './BurgerIngredients.module.css';
 import { IngredientBlock } from './IngredientBlock';
 import { Modal } from '../Modal';
 import { IngredientDetails } from '../IngredientDetails';
-import { Context } from '../../services/Context';
+
+import { getIngredients } from '../../services/actions/ingredientsActions';
+import { CLOSE_MODAL } from '../../services/actions/modalAction';
 
 export const BurgerIngredients = () => {
-  const [isModal, setIsModal] = React.useState(false);
-  const [currentIngredient, setCurrentIngredient] = React.useState({});
+  const { ingredientItems, ingredientsRequest, ingredientsFaled, ingredientsSuccess } = useSelector(
+    store => store.ingredients,
+  );
+  const { isOpen } = useSelector(store => store.details);
+
+  const dispatch = useDispatch();
+
+  const bunRef = useRef(null)
+  const sauceRef = useRef(null)
+  const mainRef = useRef(null)
+
+  const mainBlock = useRef(null)
+
   const [currentTab, setCurrentTab] = React.useState('one');
 
-  const { data } = useContext(Context);
+  function handleTabs() {
+    const topDivFrame = mainBlock.current.offsetTop;
+    const bunsClientRect = bunRef.current.getBoundingClientRect().top;
+    const sauceClientRect = sauceRef.current.getBoundingClientRect().top;
+    const mainClientRect = mainRef.current.getBoundingClientRect().top;
+    
+    if (topDivFrame >= bunsClientRect && topDivFrame <= sauceClientRect) {
+      setCurrentTab('one');
+    } else if (topDivFrame >= sauceClientRect - 150 && topDivFrame <= mainClientRect) {
+      setCurrentTab('two');
+    } else if (topDivFrame >= mainClientRect) {
+      setCurrentTab('three');
+    }
+  }
 
-  const setModalProps = props => {
-    setCurrentIngredient(props);
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
+
+  const scrollToBlock = (value, scroll) => {
+    setCurrentTab(value)
+    mainBlock.current.scrollTo(0,  scroll)
+  }
+
+  const closeModal = () => {
+    dispatch({
+      type: CLOSE_MODAL,
+    });
   };
 
-  const closeModal = () => setIsModal(false);
-
-  const sortBuns = useMemo(() => data.filter(item => item.type === 'bun'), [data]);
-  const sortMain = useMemo(() => data.filter(item => item.type === 'main'), [data]);
-  const sortSause = useMemo(() => data.filter(item => item.type === 'sauce'), [data]);
-
+  const sortBuns = useMemo(
+    () => ingredientItems.filter(item => item.type === 'bun'),
+    [ingredientItems],
+  );
+  const sortMain = useMemo(
+    () => ingredientItems.filter(item => item.type === 'main'),
+    [ingredientItems],
+  );
+  const sortSause = useMemo(
+    () => ingredientItems.filter(item => item.type === 'sauce'),
+    [ingredientItems],
+  );
   return (
     <>
       <section className={ConstructorStyles.burgerConstructor}>
         <h2 className={`${ConstructorStyles.title} mt-10 mb-5`}>Соберите бургер</h2>
         <div className={`${ConstructorStyles.tabs}`}>
-          <Tab value="one" active={currentTab === 'one'} onClick={setCurrentTab}>
+          <Tab value="one" active={currentTab === 'one'} onClick={() => scrollToBlock('one', 0)}>
             Булки
           </Tab>
-          <Tab value="two" active={currentTab === 'two'} onClick={setCurrentTab}>
+          <Tab value="two" active={currentTab === 'two'} onClick={() => scrollToBlock('two', 350)}>
             Соусы
           </Tab>
-          <Tab value="three" active={currentTab === 'three'} onClick={setCurrentTab}>
+          <Tab value="three" active={currentTab === 'three'} onClick={() => scrollToBlock('three', 850)}>
             Начинки
           </Tab>
         </div>
-        <main className={`${ConstructorStyles.main} custom-scroll`}>
-          <IngredientBlock
-            title="Булки"
-            list={sortBuns}
-            onClick={setIsModal}
-            setModalDate={setModalProps}
-          />
-          <IngredientBlock
-            title="Соусы"
-            list={sortSause}
-            onClick={setIsModal}
-            setModalDate={setModalProps}
-          />
-          <IngredientBlock
-            title="Начинки"
-            list={sortMain}
-            onClick={setIsModal}
-            setModalDate={setModalProps}
-          />
+        <main className={`${ConstructorStyles.main} custom-scroll`} onScroll={handleTabs} ref={mainBlock}>
+          {ingredientsRequest ? <p>Загрузка</p> : null}
+          {!ingredientsFaled || ingredientsSuccess ? (
+            <>
+              <IngredientBlock id={'buns'} title="Булки" list={sortBuns} ref={bunRef} />
+              <IngredientBlock id='sauce' title="Соусы" list={sortSause} ref={sauceRef} />
+              <IngredientBlock id='main' title="Начинки" list={sortMain} ref={mainRef} />
+            </>
+          ) : (
+            <p>Ошибка</p>
+          )}
         </main>
       </section>
-      {isModal && (
+      {isOpen && (
         <Modal onClose={closeModal} title={'Детали ингредиента'}>
-          <IngredientDetails data={currentIngredient} />
+          <IngredientDetails />
         </Modal>
       )}
     </>
   );
 };
-

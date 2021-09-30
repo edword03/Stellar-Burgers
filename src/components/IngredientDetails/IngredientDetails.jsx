@@ -1,10 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux'
 import detailsStyles from './IngredientDetails.module.css';
 
-export const IngredientDetails = ({
-  data: { name, image_large, proteins, calories, carbohydrates, fat },
-}) => {
+export const IngredientDetails = () => {
+  const {image_large, name, calories, proteins, fat, carbohydrates} = useSelector(store => store.details.currentIngredient)
   return (
     <>
       <div className={detailsStyles.imgContainer}>
@@ -39,14 +38,4 @@ export const IngredientDetails = ({
       </div>
     </>
   );
-};
-
-IngredientDetails.propTypes = {
-  name: PropTypes.string,
-  onClose: PropTypes.func,
-  image_large: PropTypes.string,
-  proteins: PropTypes.number,
-  calories: PropTypes.number,
-  carbohydrates: PropTypes.number,
-  fat: PropTypes.number,
 };
