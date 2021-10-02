@@ -1,29 +1,50 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { OPEN_MODAL } from '../../services/actions/modalAction';
+import {getConstructor} from '../../services/selectors'
 import styles from './BurgerIngredients.module.css';
 import PropTypes from 'prop-types';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDrag } from 'react-dnd';
+import { v4 as uuidv4 } from 'uuid';
 
-export const BurgerCard = ({
-  image,
-  price,
-  name,
-  onClick,
-  setModalDate,
-  image_large,
-  proteins,
-  calories,
-  carbohydrates,
-  fat,
-}) => {
-  const openModal = () => {
-    setModalDate({ image, price, name, image_large, proteins, calories, carbohydrates, fat });
-    onClick(true);
+export const BurgerCard = props => {
+  const { image, price, name, type, _id } = props;
+  const { ingredientsConstructor } = useSelector(getConstructor);
+  const dispatch = useDispatch();
+
+  const [{ isDrag }, dragRef] = useDrag({
+    type: type === 'bun' ? 'bun' : 'IngredientItems',
+    item: { ...props, itemId: uuidv4() },
+    collect: monitor => ({
+      isDrag: monitor.isDragging()
+    }),
+    
+  });
+
+  const getCounts = (mainArray) => {
+    const counts = {};
+    for (const num of mainArray) {
+      counts[num._id] = counts[num._id] ? counts[num._id] + 1 : 1;
+    }
+    return counts;
   };
+
+  const countItem = getCounts(ingredientsConstructor)
+
+  const openModal = () => {
+    dispatch({
+      type: OPEN_MODAL,
+      payload: { ...props },
+    });
+  };
+
+  const opacity = isDrag ? 0 : 1;
 
   return (
     <>
-      <article className={styles.cart} onClick={openModal}>
-        <Counter count={1} />
+      <article className={styles.cart} onClick={openModal} ref={dragRef} style={{ opacity }}>
+        {countItem[_id] && <Counter count={countItem[_id]} />}
         <img className={`ml-4 mr-4`} src={image} alt="" />
         <p className={`${styles.price} mt-1 mb-1`}>
           <span className={`mr-1`}>{price}</span>
@@ -41,11 +62,6 @@ BurgerCard.propTypes = {
   image: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
-  setModalDate: PropTypes.func,
-  image_large: PropTypes.string,
-  proteins: PropTypes.number,
-  calories: PropTypes.number,
-  carbohydrates: PropTypes.number,
-  fat: PropTypes.number,
+  _id: PropTypes.string,
+  type: PropTypes.string,
 };

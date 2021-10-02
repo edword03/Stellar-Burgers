@@ -9,8 +9,9 @@
 .burgerItem {
   display: flex;
   align-items: center;
-  cursor: pointer;
+  cursor: move;
   justify-content: space-between;
+  
 }
 
 .price {
@@ -19,6 +20,31 @@
   justify-content: flex-end;
 }
 
+.constructorItem {
+  padding: 16px 24px;
+  display: flex;
+  margin-top: 5px;
+  border-radius: var(--common-border-radius-s);
+  background: var(--background-element);
+  max-width: 488px;
+  min-height: 48px;
+  font-family: 'Jet Brains Mono';
+  font-size: 16px;
+  line-height: 24px;
+  color: #F2F2F3;
+  flex-grow: 1;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.stubTop {
+  border-radius: var(--top-constructor-item-border-radius)
+}
+
+.stubBottom {
+  border-radius: var(--bottom-constructor-item-border-radius)
+}
 
 
 @media screen and (max-width: 900px) {

@@ -17,6 +17,7 @@
 .main {
   overflow-y: auto;
   height: 715px;
+  transition: .5s;
 }
 
 .cart {
