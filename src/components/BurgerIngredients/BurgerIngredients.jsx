@@ -6,14 +6,17 @@ import { IngredientBlock } from './IngredientBlock';
 import { Modal } from '../Modal';
 import { IngredientDetails } from '../IngredientDetails';
 
-import { getIngredients } from '../../services/actions/ingredientsActions';
 import { CLOSE_MODAL } from '../../services/actions/modalAction';
+import { getBuns, getMain, getSauce } from '../../services/selectors'
 
 export const BurgerIngredients = () => {
-  const { ingredientItems, ingredientsRequest, ingredientsFaled, ingredientsSuccess } = useSelector(
+  const { ingredientsRequest, ingredientsFaled, ingredientsSuccess } = useSelector(
     store => store.ingredients,
   );
   const { isOpen } = useSelector(store => store.details);
+  const buns = useSelector(getBuns)
+  const sauce = useSelector(getSauce)
+  const mainIngredients = useSelector(getMain)
 
   const dispatch = useDispatch();
 
@@ -40,10 +43,7 @@ export const BurgerIngredients = () => {
     }
   }
 
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
-
+ 
   const scrollToBlock = (value, scroll) => {
     setCurrentTab(value)
     mainBlock.current.scrollTo(0,  scroll)
@@ -55,18 +55,6 @@ export const BurgerIngredients = () => {
     });
   };
 
-  const sortBuns = useMemo(
-    () => ingredientItems.filter(item => item.type === 'bun'),
-    [ingredientItems],
-  );
-  const sortMain = useMemo(
-    () => ingredientItems.filter(item => item.type === 'main'),
-    [ingredientItems],
-  );
-  const sortSause = useMemo(
-    () => ingredientItems.filter(item => item.type === 'sauce'),
-    [ingredientItems],
-  );
   return (
     <>
       <section className={ConstructorStyles.burgerConstructor}>
@@ -86,9 +74,9 @@ export const BurgerIngredients = () => {
           {ingredientsRequest ? <p>Загрузка</p> : null}
           {!ingredientsFaled || ingredientsSuccess ? (
             <>
-              <IngredientBlock id={'buns'} title="Булки" list={sortBuns} ref={bunRef} />
-              <IngredientBlock id='sauce' title="Соусы" list={sortSause} ref={sauceRef} />
-              <IngredientBlock id='main' title="Начинки" list={sortMain} ref={mainRef} />
+              <IngredientBlock id={'buns'} title="Булки" list={buns} ref={bunRef} />
+              <IngredientBlock id='sauce' title="Соусы" list={sauce} ref={sauceRef} />
+              <IngredientBlock id='main' title="Начинки" list={mainIngredients} ref={mainRef} />
             </>
           ) : (
             <p>Ошибка</p>

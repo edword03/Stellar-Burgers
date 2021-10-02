@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { OPEN_MODAL } from '../../services/actions/modalAction';
+import {getConstructor} from '../../services/selectors'
 import styles from './BurgerIngredients.module.css';
 import PropTypes from 'prop-types';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -9,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const BurgerCard = props => {
   const { image, price, name, type, _id } = props;
-  const { ingredientsConstructor } = useSelector(store => store.counstructor);
+  const { ingredientsConstructor } = useSelector(getConstructor);
   const dispatch = useDispatch();
 
   const [{ isDrag }, dragRef] = useDrag({

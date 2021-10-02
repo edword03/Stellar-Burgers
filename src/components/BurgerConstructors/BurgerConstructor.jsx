@@ -2,6 +2,7 @@ import React, { useMemo, useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendOrder, CLOSE_ORDER } from '../../services/actions/orderAction';
 import { ADD_ITEM, ADD_BUN, REMOVE_ITEM, MOVE_ITEM } from '../../services/actions/constructorAction';
+import {getConstructor} from '../../services/selectors'
 import { useDrop } from 'react-dnd';
 
 import BurgerIngredientStyles from './BurgerConstructor.module.css';
@@ -13,10 +14,9 @@ import { OrderDetails } from '../OrderDetails';
 import { Stub } from './Stub';
 
 export const BurgerConstructor = () => {
-  const { ingredientsConstructor, bunItems } = useSelector(store => store.counstructor);
+  const { ingredientsConstructor, bunItems } = useSelector(getConstructor);
   const { orderFailed, isModal } = useSelector(store => store.order);
   const [error, setError] = useState(false)
-  const bunItem = useSelector(store => store.counstructor.bunItems);
   const dispatch = useDispatch();
   const [{canDrop}, dropTarget] = useDrop({
     accept: 'bun',
@@ -111,7 +111,7 @@ export const BurgerConstructor = () => {
       <section className={`mt-25 pr-4 pl-4`}>
         <div ref={ref => dropTarget(ref)}>
           {bunItems.name ? (
-            <BurgerConstructorItem {...bunItem} typeItem={'top'} name={bunItems.name + '(верх)'} />
+            <BurgerConstructorItem {...bunItems} typeItem={'top'} name={bunItems.name + '(верх)'} />
           ) : (
             <Stub type="top" errorClass={errorClass} />
           )}
@@ -140,7 +140,7 @@ export const BurgerConstructor = () => {
         </div>
         <div ref={ref => secondBunRef(ref)}>
           {bunItems.name ? (
-            <BurgerConstructorItem {...bunItem} typeItem={'bottom'} name={bunItems.name + '(низ)'} />
+            <BurgerConstructorItem {...bunItems} typeItem={'bottom'} name={bunItems.name + '(низ)'} />
           ) : (
             <Stub type="bottom" errorClass={errorClass} />
           )}
