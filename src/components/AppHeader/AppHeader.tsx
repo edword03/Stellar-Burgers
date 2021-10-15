@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink, useRouteMatch } from 'react-router-dom'
 import {
   Logo,
   BurgerIcon,
@@ -11,6 +12,8 @@ import headerStyles from './AppHeader.module.css';
 export const AppHeader = () => {
   const [menu, setMenu] = React.useState(false);
 
+  const {path} = useRouteMatch()
+
   const toggleMenu = () => {
     setMenu(prev => !prev);
   };
@@ -21,10 +24,10 @@ export const AppHeader = () => {
         <nav className={headerStyles.headerWrapper}>
           <ul className={headerStyles.links}>
             <li>
-              <a href="/" className={`${headerStyles.activeLink} ${headerStyles.linksItem}`}>
-                <BurgerIcon type="primary" />
+              <NavLink to='/' activeClassName={headerStyles.activeLink} className={`${headerStyles.linksItem}`} exact>
+                <BurgerIcon type={`${path === '/' ? 'primary': 'secondary'}`} />
                 <span className={`${headerStyles.linkText} text text_type_main-default`}>Конструктор</span>
-              </a>
+              </NavLink>
             </li>
             <li>
               <a href="/" className={headerStyles.linksItem}>
@@ -38,10 +41,10 @@ export const AppHeader = () => {
             <Logo />
           </a>
 
-          <a href="/" className={headerStyles.linksItem}>
-            <ProfileIcon type="secondary" />
+          <NavLink activeClassName={headerStyles.activeLink} to='/profile' className={headerStyles.linksItem} exact>
+            <ProfileIcon type={`${path === '/profile' ? 'primary': 'secondary'}`} />
             <span className={`${headerStyles.linkText} text text_type_main-default`}>Личный кабинет</span>
-          </a>
+          </NavLink>
           
           <div className={headerStyles.mobileMenu}>
             <MenuIcon type="primary" onClick={toggleMenu} />
