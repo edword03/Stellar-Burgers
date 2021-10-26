@@ -1,0 +1,33 @@
+.login {
+  margin: 0 auto;
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form {
+  /* width: 100%; */
+}
+
+.inputBlock {
+  max-width: 480px;
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.link {
+  color: #4c4cff;
+  transition: .3s;
+}
+
+.link:hover {
+  color: var(--text-primary-color);
+  opacity: 0.9;
+}

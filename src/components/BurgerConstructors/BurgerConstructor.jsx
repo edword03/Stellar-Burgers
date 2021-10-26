@@ -1,5 +1,6 @@
 import React, { useMemo, useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import {useHistory} from 'react-router-dom'
 import { sendOrder, CLOSE_ORDER } from '../../services/actions/orderAction';
 import { ADD_ITEM, ADD_BUN, REMOVE_ITEM, MOVE_ITEM } from '../../services/actions/constructorAction';
 import {getConstructor} from '../../services/selectors'
@@ -16,8 +17,11 @@ import { Stub } from './Stub';
 export const BurgerConstructor = () => {
   const { ingredientsConstructor, bunItems } = useSelector(getConstructor);
   const { orderFailed, isModal } = useSelector(store => store.order);
+  const {isAuth} = useSelector(store => store.user)
   const [error, setError] = useState(false)
   const dispatch = useDispatch();
+  const history = useHistory()
+
   const [{canDrop}, dropTarget] = useDrop({
     accept: 'bun',
     drop(item) {
@@ -85,11 +89,16 @@ export const BurgerConstructor = () => {
 
   const sendOrderData = () => {
     const orderList = getIngredientId(ingredientsConstructor, bunItems._id);
-    if (ingredientsConstructor.length > 0 && bunItems.price > 0) {
-      dispatch(sendOrder(orderList));
-      setError(false)
+
+    if (isAuth) {
+      if (ingredientsConstructor.length > 0 && bunItems.price > 0) {
+        dispatch(sendOrder(orderList));
+        setError(false)
+      } else {
+        setError(true)
+      }
     } else {
-      setError(true)
+      history.replace('/login')
     }
 
     setTimeout(() => {

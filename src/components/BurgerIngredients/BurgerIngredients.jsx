@@ -1,30 +1,23 @@
-import React, { useMemo, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ConstructorStyles from './BurgerIngredients.module.css';
 import { IngredientBlock } from './IngredientBlock';
-import { Modal } from '../Modal';
-import { IngredientDetails } from '../IngredientDetails';
-
-import { CLOSE_MODAL } from '../../services/actions/modalAction';
-import { getBuns, getMain, getSauce } from '../../services/selectors'
+import { getBuns, getMain, getSauce } from '../../services/selectors';
 
 export const BurgerIngredients = () => {
   const { ingredientsRequest, ingredientsFaled, ingredientsSuccess } = useSelector(
     store => store.ingredients,
   );
-  const { isOpen } = useSelector(store => store.details);
-  const buns = useSelector(getBuns)
-  const sauce = useSelector(getSauce)
-  const mainIngredients = useSelector(getMain)
+  const buns = useSelector(getBuns);
+  const sauce = useSelector(getSauce);
+  const mainIngredients = useSelector(getMain);
 
-  const dispatch = useDispatch();
+  const bunRef = useRef(null);
+  const sauceRef = useRef(null);
+  const mainRef = useRef(null);
 
-  const bunRef = useRef(null)
-  const sauceRef = useRef(null)
-  const mainRef = useRef(null)
-
-  const mainBlock = useRef(null)
+  const mainBlock = useRef(null);
 
   const [currentTab, setCurrentTab] = React.useState('one');
 
@@ -33,7 +26,7 @@ export const BurgerIngredients = () => {
     const bunsClientRect = bunRef.current.getBoundingClientRect().top;
     const sauceClientRect = sauceRef.current.getBoundingClientRect().top;
     const mainClientRect = mainRef.current.getBoundingClientRect().top;
-    
+
     if (topDivFrame >= bunsClientRect && topDivFrame <= sauceClientRect) {
       setCurrentTab('one');
     } else if (topDivFrame >= sauceClientRect - 150 && topDivFrame <= mainClientRect) {
@@ -43,17 +36,11 @@ export const BurgerIngredients = () => {
     }
   }
 
- 
   const scrollToBlock = (value, scroll) => {
-    setCurrentTab(value)
-    mainBlock.current.scrollTo(0,  scroll)
-  }
-
-  const closeModal = () => {
-    dispatch({
-      type: CLOSE_MODAL,
-    });
+    setCurrentTab(value);
+    mainBlock.current.scrollTo(0, scroll);
   };
+
 
   return (
     <>
@@ -66,28 +53,29 @@ export const BurgerIngredients = () => {
           <Tab value="two" active={currentTab === 'two'} onClick={() => scrollToBlock('two', 350)}>
             Соусы
           </Tab>
-          <Tab value="three" active={currentTab === 'three'} onClick={() => scrollToBlock('three', 850)}>
+          <Tab
+            value="three"
+            active={currentTab === 'three'}
+            onClick={() => scrollToBlock('three', 850)}>
             Начинки
           </Tab>
         </div>
-        <main className={`${ConstructorStyles.main} custom-scroll`} onScroll={handleTabs} ref={mainBlock}>
+        <main
+          className={`${ConstructorStyles.main} custom-scroll`}
+          onScroll={handleTabs}
+          ref={mainBlock}>
           {ingredientsRequest ? <p>Загрузка</p> : null}
           {!ingredientsFaled || ingredientsSuccess ? (
             <>
               <IngredientBlock id={'buns'} title="Булки" list={buns} ref={bunRef} />
-              <IngredientBlock id='sauce' title="Соусы" list={sauce} ref={sauceRef} />
-              <IngredientBlock id='main' title="Начинки" list={mainIngredients} ref={mainRef} />
+              <IngredientBlock id="sauce" title="Соусы" list={sauce} ref={sauceRef} />
+              <IngredientBlock id="main" title="Начинки" list={mainIngredients} ref={mainRef} />
             </>
           ) : (
             <p>Ошибка</p>
           )}
         </main>
       </section>
-      {isOpen && (
-        <Modal onClose={closeModal} title={'Детали ингредиента'}>
-          <IngredientDetails />
-        </Modal>
-      )}
     </>
   );
 };
