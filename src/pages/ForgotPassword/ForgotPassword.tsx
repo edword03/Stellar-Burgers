@@ -8,8 +8,8 @@ import { AppHeader } from '../../components/AppHeader';
 import {resetPassword} from '../../utils/api'
 
 export const ForgotPassword = () => {
-  const [email, setEmail] = useState('');
-  const {isAuth} = useSelector(store => store.user)
+  const [email, setEmail] = useState<string>('');
+  const {isAuth} = useSelector((store: any) => store.user)
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -19,12 +19,12 @@ export const ForgotPassword = () => {
     }
   }, [history, isAuth])
 
-  const onChange = e => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     setEmail(target.value);
   };
 
-  const onSubmit = async e => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const data = await resetPassword({email})

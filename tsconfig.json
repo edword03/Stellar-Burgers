@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-, "App.test.tsx", "src/App.jsx"  ]
+, "App.test.tsx", "src/App.tsx"  ]
 }

@@ -1,4 +1,4 @@
-import { setCookie } from '../../utils/cookie';
+import { setCookie } from '../../utils/cookie.ts';
 import { USER_REQUEST, USER_SUCCESS, USER_FAILED } from './registerUserAction';
 
 export function loginUser(body) {

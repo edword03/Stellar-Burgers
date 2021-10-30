@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {Location} from 'history'
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppHeader } from '../../components/AppHeader';
@@ -10,19 +11,23 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { loginUser } from '../../services/actions/loginUserAction';
 
-export const Login = () => {
-  const [form, setValue] = useState({ email: '', password: '' });
-  const dispatch = useDispatch();
-  const { isAuth } = useSelector(store => store.user);
-  const {state} = useLocation()
+type TStateField = {
+  [field: string]: string
+}
 
-  const onChange = e => {
+export const Login = () => {
+  const [form, setValue] = useState<TStateField>({ email: '', password: '' });
+  const dispatch = useDispatch();
+  const { isAuth } = useSelector((store: any) => store.user);
+  const {state} = useLocation<{from: Location}>()
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
 
     setValue({ ...form, [target.name]: target.value });
   };
 
-  const onSubmit = e => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (form.email && form.password) {
       dispatch(loginUser(form));

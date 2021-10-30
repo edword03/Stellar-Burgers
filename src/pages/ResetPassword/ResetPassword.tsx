@@ -9,13 +9,13 @@ import {resetPassword, RESET_PASSWORD} from '../../services/actions/resetPasswor
 export const ResetPassword = () => {
   const [form, setForm] = useState({password: '', token: ''});
   const [isVisisble, setIsVisible] = useState(false)
-  const {wasForgot} = useSelector(store => store.user)
+  const {wasForgot} = useSelector((store: any) => store.user)
   const dispatch = useDispatch()
   const history = useHistory()
 
-  const inputRef = useRef(null)
+  const inputRef = useRef<HTMLInputElement | null>(null)
 
-  const onChange = e => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     setForm({...form, [target.name]: target.value});
   };
@@ -29,7 +29,7 @@ export const ResetPassword = () => {
     }
   }, [dispatch])
 
-  const onSubmit = e => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(resetPassword(form, false, '/reset'))
       history.replace({
@@ -39,13 +39,17 @@ export const ResetPassword = () => {
   };
 
   const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0)
-    inputRef.current.type = isVisisble ? 'password' : 'text'
+    setTimeout(() => inputRef.current?.focus(), 0)
+    if (inputRef.current) {
+      inputRef.current.type = isVisisble ? 'password' : 'text'
+    }
     setIsVisible(!isVisisble)
   }
 
   const onBlur = () => {
-    inputRef.current.type = 'password'
+    if (inputRef.current) {
+      inputRef.current.type = 'password'
+    }
     setIsVisible(false)
   }
 

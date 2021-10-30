@@ -12,18 +12,22 @@ import styles from './Register.module.css';
 import { AppHeader } from '../../components/AppHeader';
 import { registerUser } from '../../services/actions/registerUserAction';
 
-export const Register = () => {
-  const [form, setValue] = useState({ name: '', email: '', password: '' });
-  const [error, setError] = useState(false)
-  const dispatch = useDispatch()
-  const {isAuth} = useSelector(store => store.user)
+type TStateForm = {
+  [key: string]: string
+}
 
-  const onChange = e => {
+export const Register = () => {
+  const [form, setValue] = useState<TStateForm>({ name: '', email: '', password: '' });
+  const [error, setError] = useState<true | false>(false)
+  const dispatch = useDispatch()
+  const {isAuth} = useSelector((store: any) => store.user)
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     setValue({ ...form, [target.name]: target.value });
   };
 
-  const onSubmit = e => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (form.name && form.password && form.email) {
       dispatch(registerUser(form))
@@ -54,7 +58,7 @@ export const Register = () => {
             <Input placeholder="Имя" name="name" value={form.name} onChange={onChange} error={error} errorText='Введите имя' />
           </div>
           <div className={`${styles.inputBlock} mb-6`}>
-            <EmailInput size="default" value={form.email} onChange={onChange} name="email" error={true}  />
+            <EmailInput size="default" value={form.email} onChange={onChange} name="email"  />
           </div>
           <div className={`mb-6`}>
             <PasswordInput value={form.password} onChange={onChange} name="password" />

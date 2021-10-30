@@ -1,11 +1,19 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import detailsStyles from './IngredientDetails.module.css';
 
-export const IngredientDetails = (props) => {
+interface IDetailsProps {
+  name?: string,
+  image_large?: string,
+  calories?: number,
+  fat?: number,
+  carbohydrates?: number,
+  proteins?: number
+}
+
+export const IngredientDetails: React.FC<IDetailsProps> = (props) => {
   const { image_large, name, calories, proteins, fat, carbohydrates } = useSelector(
-    store => store.details.currentIngredient,
+    (store: any) => store.details.currentIngredient,
   );
 
   return (
@@ -43,13 +51,3 @@ export const IngredientDetails = (props) => {
     </>
   );
 };
-
-
-IngredientDetails.propTypes = {
-  name: PropTypes.string,
-  image_large: PropTypes.string,
-  calories: PropTypes.number,
-  fat: PropTypes.number,
-  carbohydrates: PropTypes.number,
-  proteins: PropTypes.number
-}

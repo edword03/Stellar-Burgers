@@ -1,16 +1,41 @@
 import React from 'react';
 import BurgerIngredientStyles from './BurgerConstructor.module.css';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
 import { useDrag, useDrop } from 'react-dnd';
 
-export const BurgerConstructorItem = React.forwardRef((props, ref) => {
-  const { children, type, typeItem, name, image, price, isLocked, onRemove, _id, move, index, itemId } =
-    props;
-  const itemRef = React.useRef(null);
+interface IProps {
+  children: React.ReactNode;
+  type: string;
+  typeItem?: 'bottom' | 'top' | undefined;
+  name: string;
+  image: string;
+  price: number;
+  isLocked: boolean;
+  onRemove: (value: string) => void;
+  _id: string;
+  move: (dragIndex: number, hoverIndex: number) => void;
+  index: number;
+  itemId: string;
+}
+
+export const BurgerConstructorItem: React.FC<IProps> = ({
+  children,
+  type,
+  typeItem,
+  name,
+  image,
+  price,
+  isLocked,
+  onRemove,
+  _id,
+  move,
+  index,
+  itemId,
+}) => {
+  const itemRef = React.useRef<HTMLDivElement>(null);
   const [, dropRef] = useDrop({
     accept: type !== 'bun' ? 'ingredient' : '',
-    hover: (item, monitor) => {
+    hover: (item: any, monitor) => {
       const dragIndex = item.index;
       const hoverIndex = index;
 
@@ -19,12 +44,15 @@ export const BurgerConstructorItem = React.forwardRef((props, ref) => {
       }
 
       const hoverBoundingRect = itemRef.current?.getBoundingClientRect();
-      
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      
+
+      const hoverMiddleY = hoverBoundingRect
+        ? (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+        : 0;
+
       const clientOffset = monitor.getClientOffset();
-     
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+      const hoverClientY =
+        clientOffset && hoverBoundingRect ? clientOffset.y - hoverBoundingRect.top : 0;
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
@@ -35,9 +63,8 @@ export const BurgerConstructorItem = React.forwardRef((props, ref) => {
       }
 
       move(dragIndex, hoverIndex);
-      item.index = hoverIndex
+      item.index = hoverIndex;
     },
-    
   });
 
   const [{ isDrag }, dragItem] = useDrag({
@@ -53,15 +80,13 @@ export const BurgerConstructorItem = React.forwardRef((props, ref) => {
   dragItem(dropRef(itemRef));
   const opacity = isDrag ? 0 : 1;
 
-
-
   return (
     <article
       className={`${BurgerIngredientStyles.burgerItem} ${BurgerIngredientStyles.burgerBun} ${
         typeItem === 'top' ? 'mb-4' : typeItem === 'bottom' ? 'mt-4' : ''
       }`}
       ref={itemRef}
-      style={{ opacity, }}>
+      style={{ opacity }}>
       {children ? children : <div style={{ width: 24, height: 24 }}></div>}
       <ConstructorElement
         text={name}
@@ -73,18 +98,4 @@ export const BurgerConstructorItem = React.forwardRef((props, ref) => {
       />
     </article>
   );
-});
-
-BurgerConstructorItem.propTypes = {
-  name: PropTypes.string,
-  price: PropTypes.number,
-  image: PropTypes.string,
-  isLocked: PropTypes.bool,
-  type: PropTypes.string,
-  typeItem: PropTypes.string,
-  children: PropTypes.node,
-  onRemove: PropTypes.func,
-  _id: PropTypes.string,
-  move: PropTypes.func,
-  index: PropTypes.number
 };

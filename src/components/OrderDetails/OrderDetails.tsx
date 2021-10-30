@@ -4,7 +4,7 @@ import doneGif from '../../assets/images/order-accepted.gif';
 import orderStyles from './OrderDetails.module.css';
 
 export const OrderDetails = () => {
-  const number = useSelector(store => store.order.order.number)
+  const number = useSelector((store: any) => store.order.order.number);
   return (
     <>
       <h2 className={`text text_type_digits-large mt-4 mb-8 ${orderStyles.textCenter}`}>
