@@ -35,7 +35,7 @@ export const BurgerConstructorItem: React.FC<IProps> = ({
   const itemRef = React.useRef<HTMLDivElement>(null);
   const [, dropRef] = useDrop({
     accept: type !== 'bun' ? 'ingredient' : '',
-    hover: (item: any, monitor) => {
+    hover: (item: {index: number}, monitor) => {
       const dragIndex = item.index;
       const hoverIndex = index;
 

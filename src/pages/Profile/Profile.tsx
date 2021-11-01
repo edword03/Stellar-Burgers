@@ -21,7 +21,7 @@ export const Profile = () => {
   const { name, email } = useSelector((store: any) => store.user.user);
   const initialState: TInitialState = { name: name, email: email, password: '' };
 
-  const [form, setForm] = useState(initialState);
+  const [form, setForm] = useState<TInitialState>(initialState);
   const [edit, setEdit] = useState<IEditForm>({ name: true, email: true, password: true });
   const dispatch = useDispatch();
 

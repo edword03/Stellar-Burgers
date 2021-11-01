@@ -21,7 +21,7 @@ export const BurgerIngredients = () => {
 
   const [currentTab, setCurrentTab] = React.useState<string>('one');
 
-  function handleTabs() {
+  function handleTabs(): void {
     const topDivFrame = mainBlock.current ? mainBlock.current.offsetTop : 0;
     const bunsClientRect = bunRef.current ? bunRef.current.getBoundingClientRect().top : 0;
     const sauceClientRect = sauceRef.current ? sauceRef.current.getBoundingClientRect().top : 0;
@@ -36,7 +36,7 @@ export const BurgerIngredients = () => {
     }
   }
 
-  const scrollToBlock = (value: string, scroll: number) => {
+  const scrollToBlock = (value: string, scroll: number): void => {
     setCurrentTab(value);
     mainBlock.current && mainBlock.current.scrollTo(0, scroll);
   };

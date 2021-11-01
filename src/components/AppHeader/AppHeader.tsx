@@ -10,7 +10,7 @@ import {
 import headerStyles from './AppHeader.module.css';
 
 export const AppHeader = () => {
-  const [menu, setMenu] = React.useState(false);
+  const [menu, setMenu] = React.useState<boolean>(false);
 
   const {path} = useRouteMatch()
 

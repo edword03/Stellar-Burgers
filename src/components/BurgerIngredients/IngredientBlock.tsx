@@ -2,7 +2,6 @@ import React from 'react';
 import {Link, useLocation} from 'react-router-dom'
 import styles from './BurgerIngredients.module.css';
 import { BurgerCard } from './BurgerCard';
-import PropTypes from 'prop-types';
 
 interface IIngredientBlock {
   list: Array<any>
@@ -30,8 +29,3 @@ export const IngredientBlock = React.forwardRef<HTMLDivElement, IIngredientBlock
     </div>
   );
 })
-
-IngredientBlock.propTypes = {
-  list: PropTypes.array.isRequired,
-  title: PropTypes.string.isRequired,
-};
