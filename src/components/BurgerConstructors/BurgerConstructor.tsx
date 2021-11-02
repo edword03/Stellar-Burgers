@@ -136,7 +136,7 @@ export const BurgerConstructor = () => {
                 key={item.itemId}
                 move={moveItem}
                 index={i}
-                ref={ingrTarget}
+                // ref={ingrTarget}
                 onRemove={removeItem}>
                 <div className="mr-2">
                   <DragIcon type='primary' />

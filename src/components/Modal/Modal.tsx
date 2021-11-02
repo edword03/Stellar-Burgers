@@ -13,7 +13,7 @@ interface IModalProps {
 
 export const Modal: React.FC<IModalProps> = ({ onClose, children, title, paddingBottom }) => {
   const closeModalOnKey = React.useCallback(
-    e => {
+    (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
         console.log(1);

@@ -1,15 +1,11 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
-import { AppHeader } from '../components/AppHeader';
+import { Link } from 'react-router-dom';
 
 export const ErrorPage = () => {
   return (
     <>
-      <AppHeader />
       Упс...Указанная страница не найдена
-      <Link to={'/'}>
-        На главную
-      </Link>
+      <Link to={'/'}>На главную</Link>
     </>
   );
 };

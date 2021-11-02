@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux'
-import {Redirect} from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import {
   EmailInput,
   PasswordInput,
@@ -9,18 +9,15 @@ import {
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './Register.module.css';
-import { AppHeader } from '../../components/AppHeader';
 import { registerUser } from '../../services/actions/registerUserAction';
 
-type TStateForm = {
-  [key: string]: string
-}
+import { IFieldType } from '../../types/common';
 
 export const Register = () => {
-  const [form, setValue] = useState<TStateForm>({ name: '', email: '', password: '' });
-  const [error, setError] = useState<true | false>(false)
-  const dispatch = useDispatch()
-  const {isAuth} = useSelector((store: any) => store.user)
+  const [form, setValue] = useState<IFieldType<string>>({ name: '', email: '', password: '' });
+  const [error, setError] = useState<true | false>(false);
+  const dispatch = useDispatch();
+  const { isAuth } = useSelector((store: any) => store.user);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
@@ -30,35 +27,38 @@ export const Register = () => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (form.name && form.password && form.email) {
-      dispatch(registerUser(form))
+      dispatch(registerUser(form));
       console.log('register');
     }
 
     if (!form.name) {
-      setError(true)
+      setError(true);
     } else {
-      setError(false)
+      setError(false);
     }
-  
   };
 
-  if(isAuth) {
-    return (
-      <Redirect to='/' />
-    )
+  if (isAuth) {
+    return <Redirect to="/" />;
   }
 
   return (
     <>
-      <AppHeader />
       <div className={`${styles.login} pt-30`}>
         <h2 className="text text_type_main-medium mb-6">Регистрация</h2>
         <form className={`${styles.form} pb-20`} onSubmit={onSubmit}>
           <div className={`mb-6`}>
-            <Input placeholder="Имя" name="name" value={form.name} onChange={onChange} error={error} errorText='Введите имя' />
+            <Input
+              placeholder="Имя"
+              name="name"
+              value={form.name}
+              onChange={onChange}
+              error={error}
+              errorText="Введите имя"
+            />
           </div>
           <div className={`${styles.inputBlock} mb-6`}>
-            <EmailInput size="default" value={form.email} onChange={onChange} name="email"  />
+            <EmailInput size="default" value={form.email} onChange={onChange} name="email" />
           </div>
           <div className={`mb-6`}>
             <PasswordInput value={form.password} onChange={onChange} name="password" />

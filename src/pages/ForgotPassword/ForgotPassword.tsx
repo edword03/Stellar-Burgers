@@ -4,7 +4,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ForgotPassword.module.css';
 import { AppHeader } from '../../components/AppHeader';
-// import {resetPassword} from '../../services/actions/resetPassword'
+import {RESET_PASSWORD} from '../../services/actions/resetPassword'
 import {resetPassword} from '../../utils/api'
 
 export const ForgotPassword = () => {
@@ -32,7 +32,7 @@ export const ForgotPassword = () => {
 
     if (data.success) {
       dispatch({
-        type: 'RESET_PASSWORD',
+        type: RESET_PASSWORD,
         payload: true
       })
       history.replace({ pathname: '/reset-password'})

@@ -6,7 +6,7 @@ export const SEND_DATA_SUCCESS = 'SEND_DATA_SUCCESS'
 export const SEND_DATA_FAILED = 'SEND_DATA_FAILED'
 export const CLOSE_ORDER = 'CLOSE_ORDER'
 
-const apiUrl = 'https://norma.nomoreparties.space/api/orders';
+const apiUrl = `${process.env.REACT_APP_URL}/orders`;
 
 
 export const sendOrder = (data) => {

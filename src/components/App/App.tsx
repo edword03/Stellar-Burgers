@@ -11,14 +11,15 @@ import {
   Profile,
   Ingredient,
   ErrorPage,
-} from './pages';
-import { ProtectRoute } from './components/ProtectRoute';
-import { getIngredients } from './services/actions/ingredientsActions';
-import { getUser } from './services/actions/getuser';
-import { Modal } from './components/Modal';
-import { IngredientDetails } from './components/IngredientDetails';
+} from '../../pages';
+import { ProtectRoute } from '../ProtectRoute';
+import { getIngredients } from '../../services/actions/ingredientsActions';
+import { getUser } from '../../services/actions/getuser';
+import { Modal } from '../Modal';
+import { IngredientDetails } from '../IngredientDetails';
+import { AppHeader } from '../AppHeader';
 
-import { CLOSE_MODAL } from './services/actions/modalAction';
+import { CLOSE_MODAL } from '../../services/actions/modalAction';
 
 type TLocation = {
   from: Location;
@@ -52,6 +53,7 @@ export function App() {
 
   return (
     <>
+      <AppHeader />
       <Switch location={modalIngredientOpen || location}>
         <Route path="/" exact>
           <Home />

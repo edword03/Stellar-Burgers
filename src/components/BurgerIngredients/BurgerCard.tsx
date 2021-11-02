@@ -7,21 +7,19 @@ import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-c
 import { useDrag } from 'react-dnd';
 import { v4 as uuidv4 } from 'uuid';
 
+import {IFieldType} from '../../types/common'
+
 interface ICardProps {
   image: string
   price: number
   name: string
   _id: string
-  type: string
-}
-
-type TCount = {
-  [key: string]: number
+  type: 'bun' | 'IngredientItems'
 }
 
 export const BurgerCard: React.FC<ICardProps> = props => {
   const { image, price, name, type, _id } = props;
-  const { ingredientsConstructor } = useSelector(getConstructor);
+  const { ingredientsConstructor, bunItems } = useSelector(getConstructor);
   const dispatch = useDispatch();
 
   const [{ isDrag }, dragRef] = useDrag({
@@ -33,8 +31,8 @@ export const BurgerCard: React.FC<ICardProps> = props => {
     
   });
 
-  const getCounts = (mainArray: Array<any>): TCount => {
-    const counts: TCount = {};
+  const getCounts = (mainArray: Array<any>): IFieldType<number> => {
+    const counts: IFieldType<number> = {};
     for (const num of mainArray) {
       counts[num._id] = counts[num._id] ? counts[num._id] + 1 : 1;
     }
@@ -42,6 +40,7 @@ export const BurgerCard: React.FC<ICardProps> = props => {
   };
 
   const countItem = getCounts(ingredientsConstructor)
+  const bunCount = getCounts([bunItems])
 
   const openModal = (): void => {
     dispatch({
@@ -56,6 +55,7 @@ export const BurgerCard: React.FC<ICardProps> = props => {
     <>
       <article className={styles.cart} onClick={openModal} ref={dragRef} style={{ opacity }}>
         {countItem[_id] && <Counter count={countItem[_id]} />}
+        {type === 'bun' && bunCount[_id] && <Counter count={2} />}
         <img className={`ml-4 mr-4`} src={image} alt="" />
         <p className={`${styles.price} mt-1 mb-1`}>
           <span className={`mr-1`}>{price}</span>

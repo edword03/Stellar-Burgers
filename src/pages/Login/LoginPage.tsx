@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import {Location} from 'history'
+import { Location } from 'history';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppHeader } from '../../components/AppHeader';
 import styles from './Login.module.css';
 import {
   EmailInput,
@@ -11,15 +10,13 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { loginUser } from '../../services/actions/loginUserAction';
 
-type TStateField = {
-  [field: string]: string
-}
+import { IFieldType } from '../../types/common';
 
 export const Login = () => {
-  const [form, setValue] = useState<TStateField>({ email: '', password: '' });
+  const [form, setValue] = useState<IFieldType<string>>({ email: '', password: '' });
   const dispatch = useDispatch();
   const { isAuth } = useSelector((store: any) => store.user);
-  const {state} = useLocation<{from: Location}>()
+  const { state } = useLocation<{ from: Location }>();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
@@ -40,7 +37,6 @@ export const Login = () => {
 
   return (
     <>
-      <AppHeader />
       <div className={`${styles.login} pt-30`}>
         <h2 className="text text_type_main-medium mb-6">Вход</h2>
         <form className={`${styles.form} pb-20`} onSubmit={onSubmit}>
