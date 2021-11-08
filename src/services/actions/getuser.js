@@ -1,6 +1,6 @@
 import { USER_REQUEST, USER_SUCCESS, USER_FAILED } from './registerUserAction';
 import { fetchWithRefresh } from '../../utils/api';
-import { getCookie } from '../../utils/cookie';
+import { getCookie } from '../../utils/cookie.ts';
 
 export function getUser(method, option) {
   return  dispatch => {

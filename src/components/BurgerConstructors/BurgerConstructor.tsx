@@ -16,9 +16,9 @@ import { Stub } from './Stub';
 
 export const BurgerConstructor = () => {
   const { ingredientsConstructor, bunItems } = useSelector(getConstructor);
-  const { orderFailed, isModal } = useSelector(store => store.order);
-  const {isAuth} = useSelector(store => store.user)
-  const [error, setError] = useState(false)
+  const { orderFailed, isModal } = useSelector((store: any) => store.order);
+  const {isAuth} = useSelector((store: any) => store.user)
+  const [error, setError] = useState<boolean>(false)
   const dispatch = useDispatch();
   const history = useHistory()
 
@@ -61,7 +61,7 @@ export const BurgerConstructor = () => {
   });
 
   const borderColor = isHover ? '3px dashed #4C4CFF' : '';
-  const moveItem = useCallback((dragIndex, hoverIdnex) => {
+  const moveItem = useCallback((dragIndex: number, hoverIdnex: number) => {
     const dragItem = ingredientsConstructor[dragIndex]
     const newItem = [...ingredientsConstructor]
     newItem.splice(dragIndex, 1)
@@ -74,12 +74,12 @@ export const BurgerConstructor = () => {
   }, [ingredientsConstructor, dispatch])
 
   const totalPrice = useMemo(
-    () => ingredientsConstructor.reduce((acc, cur) => acc + cur.price, 0) + bunItems.price * 2,
+    () => ingredientsConstructor.reduce((acc: number, cur: {price: number}) => acc + cur.price, 0) + bunItems.price * 2,
     [ingredientsConstructor, bunItems],
   );
 
-  const getIngredientId = (arr, id) => {
-    return { ingredients: [...arr.map(item => item._id), id] };
+  const getIngredientId = (arr = [], id: string) => {
+    return { ingredients: [...arr.map((item: any) => item._id), id] };
   };
 
   const closeModal = () =>
@@ -106,7 +106,7 @@ export const BurgerConstructor = () => {
     }, 2000)
   };
 
-  const removeItem = id => {
+  const removeItem = (id: string) => {
     dispatch({
       type: REMOVE_ITEM,
       id,
@@ -120,7 +120,7 @@ export const BurgerConstructor = () => {
       <section className={`mt-25 pr-4 pl-4`}>
         <div ref={ref => dropTarget(ref)}>
           {bunItems.name ? (
-            <BurgerConstructorItem {...bunItems} typeItem={'top'} name={bunItems.name + '(верх)'} />
+            <BurgerConstructorItem {...bunItems} typeItem='top' name={bunItems.name + '(верх)'} />
           ) : (
             <Stub type="top" errorClass={errorClass} />
           )}
@@ -129,17 +129,17 @@ export const BurgerConstructor = () => {
           className={`${BurgerIngredientStyles.ingredientBlock} custom-scroll`}
           ref={ref => ingrTarget(ref)}>
           {ingredientsConstructor.length > 0 ? (
-            ingredientsConstructor.map((item, i) => (
+            ingredientsConstructor.map((item: any, i: number) => (
               <BurgerConstructorItem
                 {...item}
                 isLocked={false}
                 key={item.itemId}
                 move={moveItem}
                 index={i}
-                ref={ingrTarget}
+                // ref={ingrTarget}
                 onRemove={removeItem}>
                 <div className="mr-2">
-                  <DragIcon />
+                  <DragIcon type='primary' />
                 </div>
               </BurgerConstructorItem>
             ))
@@ -149,7 +149,7 @@ export const BurgerConstructor = () => {
         </div>
         <div ref={ref => secondBunRef(ref)}>
           {bunItems.name ? (
-            <BurgerConstructorItem {...bunItems} typeItem={'bottom'} name={bunItems.name + '(низ)'} />
+            <BurgerConstructorItem {...bunItems} typeItem='bottom' name={bunItems.name + '(низ)'} />
           ) : (
             <Stub type="bottom" errorClass={errorClass} />
           )}
@@ -158,7 +158,7 @@ export const BurgerConstructor = () => {
         <div className={`mt-10 ${BurgerIngredientStyles.price}`}>
           <p className={`mr-10`}>
             <span className="mr-2 text text_type_digits-medium">{totalPrice}</span>
-            <CurrencyIcon />
+            <CurrencyIcon type='primary' />
           </p>
           <Button type="primary" size="large" onClick={sendOrderData}>
             Оформить заказ

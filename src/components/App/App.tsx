@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Location } from 'history';
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import {
   Home,
@@ -10,20 +11,26 @@ import {
   Profile,
   Ingredient,
   ErrorPage,
-} from './pages';
-import { ProtectRoute } from './components/ProtectRoute';
-import { getIngredients } from './services/actions/ingredientsActions';
-import { getUser } from './services/actions/getuser';
-import {Modal} from './components/Modal'
-import {IngredientDetails} from './components/IngredientDetails'
+} from '../../pages';
+import { ProtectRoute } from '../ProtectRoute';
+import { getIngredients } from '../../services/actions/ingredientsActions';
+import { getUser } from '../../services/actions/getuser';
+import { Modal } from '../Modal';
+import { IngredientDetails } from '../IngredientDetails';
+import { AppHeader } from '../AppHeader';
 
-import { CLOSE_MODAL } from './services/actions/modalAction';
+import { CLOSE_MODAL } from '../../services/actions/modalAction';
 
+type TLocation = {
+  from: Location;
+  ingredientModal: Location;
+  state: Location;
+};
 
 export function App() {
   const dispatch = useDispatch();
-  const { isAuth } = useSelector(store => store.user);
-  const location = useLocation();
+  const { isAuth } = useSelector((store: any) => store.user);
+  const location = useLocation<TLocation>();
   const history = useHistory();
 
   const action = history.action === 'PUSH' || history.action === 'REPLACE';
@@ -46,9 +53,10 @@ export function App() {
 
   return (
     <>
+      <AppHeader />
       <Switch location={modalIngredientOpen || location}>
         <Route path="/" exact>
-          <Home isModal={modalIngredientOpen} />
+          <Home />
         </Route>
         <Route path="/login" exact>
           <Login />

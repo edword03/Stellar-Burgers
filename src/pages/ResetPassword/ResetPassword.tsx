@@ -1,63 +1,70 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {useSelector, useDispatch} from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ResetPassword.module.css';
-import { AppHeader } from '../../components/AppHeader';
-import {resetPassword, RESET_PASSWORD} from '../../services/actions/resetPassword'
+import { resetPassword, RESET_PASSWORD } from '../../services/actions/resetPassword';
+
+import { IFieldType } from '../../types/common';
 
 export const ResetPassword = () => {
-  const [form, setForm] = useState({password: '', token: ''});
-  const [isVisisble, setIsVisible] = useState(false)
-  const {wasForgot} = useSelector(store => store.user)
-  const dispatch = useDispatch()
-  const history = useHistory()
+  const [form, setForm] = useState<IFieldType<string>>({ password: '', token: '' });
+  const [isVisisble, setIsVisible] = useState(false);
+  const { wasForgot } = useSelector((store: any) => store.user);
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-  const inputRef = useRef(null)
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const onChange = e => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
-    setForm({...form, [target.name]: target.value});
+    setForm({ ...form, [target.name]: target.value });
   };
 
   useEffect(() => {
     return () => {
       dispatch({
         type: RESET_PASSWORD,
-        payload: false
-      })
-    }
-  }, [dispatch])
+        payload: false,
+      });
+    };
+  }, [dispatch]);
 
-  const onSubmit = e => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(resetPassword(form, false, '/reset'))
-      history.replace({
-        pathname: '/login'
-      })
-    
+    dispatch(resetPassword(form, false, '/reset'));
+    history.replace({
+      pathname: '/login',
+    });
   };
 
   const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0)
-    inputRef.current.type = isVisisble ? 'password' : 'text'
-    setIsVisible(!isVisisble)
-  }
+    setTimeout(() => inputRef.current?.focus(), 0);
+    if (inputRef.current) {
+      inputRef.current.type = isVisisble ? 'password' : 'text';
+    }
+    setIsVisible(!isVisisble);
+  };
 
   const onBlur = () => {
-    inputRef.current.type = 'password'
-    setIsVisible(false)
-  }
+    if (inputRef.current) {
+      inputRef.current.type = 'password';
+    }
+    setIsVisible(false);
+  };
 
   if (wasForgot === false) {
-    return <Redirect to={{
-      pathname: '/forgot-password'
-    }} />
+    return (
+      <Redirect
+        to={{
+          pathname: '/forgot-password',
+        }}
+      />
+    );
   }
 
   return (
     <>
-      <AppHeader />
       <div className={`${styles.login} pt-30`}>
         <h2 className="text text_type_main-medium mb-6">Восстановление пароля</h2>
         <form className={`${styles.form} pb-20`} onSubmit={onSubmit}>
@@ -68,9 +75,9 @@ export const ResetPassword = () => {
               onChange={onChange}
               name="password"
               placeholder="Введите новый пароль"
-              icon={!isVisisble ? 'ShowIcon': 'HideIcon'}
+              icon={!isVisisble ? 'ShowIcon' : 'HideIcon'}
               type="password"
-              ref={ref => inputRef.current = ref}
+              ref={ref => (inputRef.current = ref)}
               onIconClick={onIconClick}
               onBlur={onBlur}
             />

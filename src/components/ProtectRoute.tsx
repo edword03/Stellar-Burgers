@@ -2,13 +2,19 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 
-export const ProtectRoute = ({ children, ...rest }) => {
-  const { isAuth } = useSelector(store => store.user);
+type TProtectRouteProps = {
+  children: any;
+  path: string;
+  exact?: boolean;
+};
 
+export const ProtectRoute: React.FC<TProtectRouteProps> = ({ children, path, exact }) => {
+  const { isAuth } = useSelector((store: any) => store.user);
 
   return (
     <Route
-      {...rest}
+      path={path}
+      exact={exact}
       render={({ location }) =>
         isAuth ? (
           children

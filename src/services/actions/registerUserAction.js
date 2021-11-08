@@ -1,4 +1,4 @@
-import { setCookie } from '../../utils/cookie';
+import { setCookie } from '../../utils/cookie.ts';
 
 export const USER_REQUEST = 'USER_REQUEST';
 export const USER_SUCCESS = 'REGISTER_SUCCESS';

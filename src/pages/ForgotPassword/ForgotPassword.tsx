@@ -4,12 +4,12 @@ import { Link, useHistory } from 'react-router-dom';
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ForgotPassword.module.css';
 import { AppHeader } from '../../components/AppHeader';
-// import {resetPassword} from '../../services/actions/resetPassword'
+import {RESET_PASSWORD} from '../../services/actions/resetPassword'
 import {resetPassword} from '../../utils/api'
 
 export const ForgotPassword = () => {
-  const [email, setEmail] = useState('');
-  const {isAuth} = useSelector(store => store.user)
+  const [email, setEmail] = useState<string>('');
+  const {isAuth} = useSelector((store: any) => store.user)
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -19,12 +19,12 @@ export const ForgotPassword = () => {
     }
   }, [history, isAuth])
 
-  const onChange = e => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     setEmail(target.value);
   };
 
-  const onSubmit = async e => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const data = await resetPassword({email})
@@ -32,7 +32,7 @@ export const ForgotPassword = () => {
 
     if (data.success) {
       dispatch({
-        type: 'RESET_PASSWORD',
+        type: RESET_PASSWORD,
         payload: true
       })
       history.replace({ pathname: '/reset-password'})

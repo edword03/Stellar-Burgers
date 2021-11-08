@@ -7,25 +7,25 @@ import { getBuns, getMain, getSauce } from '../../services/selectors';
 
 export const BurgerIngredients = () => {
   const { ingredientsRequest, ingredientsFaled, ingredientsSuccess } = useSelector(
-    store => store.ingredients,
+    (store: any) => store.ingredients,
   );
   const buns = useSelector(getBuns);
   const sauce = useSelector(getSauce);
   const mainIngredients = useSelector(getMain);
 
-  const bunRef = useRef(null);
-  const sauceRef = useRef(null);
-  const mainRef = useRef(null);
+  const bunRef = useRef<HTMLDivElement>(null);
+  const sauceRef = useRef<HTMLDivElement>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
 
-  const mainBlock = useRef(null);
+  const mainBlock = useRef<HTMLDivElement>(null);
 
-  const [currentTab, setCurrentTab] = React.useState('one');
+  const [currentTab, setCurrentTab] = React.useState<string>('one');
 
-  function handleTabs() {
-    const topDivFrame = mainBlock.current.offsetTop;
-    const bunsClientRect = bunRef.current.getBoundingClientRect().top;
-    const sauceClientRect = sauceRef.current.getBoundingClientRect().top;
-    const mainClientRect = mainRef.current.getBoundingClientRect().top;
+  function handleTabs(): void {
+    const topDivFrame = mainBlock.current ? mainBlock.current.offsetTop : 0;
+    const bunsClientRect = bunRef.current ? bunRef.current.getBoundingClientRect().top : 0;
+    const sauceClientRect = sauceRef.current ? sauceRef.current.getBoundingClientRect().top : 0;
+    const mainClientRect = mainRef.current ? mainRef.current.getBoundingClientRect().top : 0;
 
     if (topDivFrame >= bunsClientRect && topDivFrame <= sauceClientRect) {
       setCurrentTab('one');
@@ -36,11 +36,10 @@ export const BurgerIngredients = () => {
     }
   }
 
-  const scrollToBlock = (value, scroll) => {
+  const scrollToBlock = (value: string, scroll: number): void => {
     setCurrentTab(value);
-    mainBlock.current.scrollTo(0, scroll);
+    mainBlock.current && mainBlock.current.scrollTo(0, scroll);
   };
-
 
   return (
     <>
@@ -67,7 +66,7 @@ export const BurgerIngredients = () => {
           {ingredientsRequest ? <p>Загрузка</p> : null}
           {!ingredientsFaled || ingredientsSuccess ? (
             <>
-              <IngredientBlock id={'buns'} title="Булки" list={buns} ref={bunRef} />
+              <IngredientBlock id="buns" title="Булки" list={buns} ref={bunRef} />
               <IngredientBlock id="sauce" title="Соусы" list={sauce} ref={sauceRef} />
               <IngredientBlock id="main" title="Начинки" list={mainIngredients} ref={mainRef} />
             </>

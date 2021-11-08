@@ -1,13 +1,19 @@
 import React from 'react';
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
 import { ModalOverlay } from '../ModalOverlay';
 import modalStyles from './Modal.module.css';
-import PropTypes from 'prop-types';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-export const Modal = ({ onClose, children, isVisible, title, paddingBottom }) => {
+interface IModalProps {
+  onClose: () => void;
+  children: React.ReactNode;
+  title?: string;
+  paddingBottom?: string;
+}
+
+export const Modal: React.FC<IModalProps> = ({ onClose, children, title, paddingBottom }) => {
   const closeModalOnKey = React.useCallback(
-    e => {
+    (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
         console.log(1);
@@ -25,6 +31,8 @@ export const Modal = ({ onClose, children, isVisible, title, paddingBottom }) =>
     };
   }, [closeModalOnKey]);
 
+  const rootModal = document.getElementById('root-modal') as HTMLElement;
+
   return ReactDOM.createPortal(
     <ModalOverlay onClose={onClose}>
       <div
@@ -33,20 +41,12 @@ export const Modal = ({ onClose, children, isVisible, title, paddingBottom }) =>
         <div className={`${title ? modalStyles.headDetails : modalStyles.headOrder}`}>
           {title && <h2 className="text text_type_main-large">{title}</h2>}
           <span style={{ cursor: 'pointer' }}>
-            <CloseIcon onClick={onClose} />
+            <CloseIcon type="primary" onClick={onClose} />
           </span>
         </div>
         <div className={modalStyles.content}>{children}</div>
       </div>
     </ModalOverlay>,
-    document.getElementById('root-modal')
+    rootModal,
   );
-};
-
-Modal.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired,
-  isVisible: PropTypes.bool,
-  paddingBottom: PropTypes.string,
-  title: PropTypes.string,
 };

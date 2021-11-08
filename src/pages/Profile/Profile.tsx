@@ -1,24 +1,34 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { NavLink, useHistory } from 'react-router-dom';
-import { AppHeader } from '../../components/AppHeader';
+import { NavLink } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './Profile.module.css';
 import { logout } from '../../services/actions/logoutAction';
 import { getUser } from '../../services/actions/getuser';
 
+import { IFieldType } from '../../types/common';
+
+type TInitialState = {
+  name: string;
+  email: string;
+  password: string;
+};
+
 export const Profile = () => {
-  const { name, email } = useSelector(store => store.user.user);
-  const initialState = { name: name, email: email, password: '' };
+  const { name, email } = useSelector((store: any) => store.user.user);
+  const initialState: TInitialState = { name: name, email: email, password: '' };
 
-  const [form, setForm] = useState(initialState);
-  const [edit, setEdit] = useState({ name: true, email: true, password: true });
+  const [form, setForm] = useState<TInitialState>(initialState);
+  const [edit, setEdit] = useState<IFieldType<boolean>>({
+    name: true,
+    email: true,
+    password: true,
+  });
   const dispatch = useDispatch();
-  const history = useHistory();
 
-  const nameRef = useRef(null);
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     dispatch(getUser('GET'));
@@ -28,17 +38,17 @@ export const Profile = () => {
     dispatch(logout());
   };
 
-  const onChange = e => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     setForm({ ...form, [target.name]: target.value });
   };
 
-  const onCancel = e => {
+  const onCancel = (e: React.FormEvent) => {
     e.preventDefault();
     setForm(initialState);
   };
 
-  const onSave = e => {
+  const onSave = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (
       form.name !== initialState.name ||
@@ -46,24 +56,23 @@ export const Profile = () => {
       form.password !== initialState.password
     ) {
       dispatch(getUser('PATCH', { body: JSON.stringify(form) }));
-      setForm({...form, password: ''});
+      setForm({ ...form, password: '' });
     }
   };
 
-  const onIconClick = ref => {
+  const onIconClick = (ref: { current: any }) => {
     setEdit({ ...edit, [ref.current.name]: !edit[ref.current.name] });
     console.log(ref.current);
     setTimeout(() => ref.current.focus(), 0);
   };
 
-  const onBlur = ref => {
+  const onBlur = (ref: { current: any }) => {
     const target = ref.current;
     setEdit({ ...edit, [target.name]: !edit[target.name] });
   };
 
   return (
     <>
-      <AppHeader />
       <div className={`mt-30 ${styles.container}`}>
         <aside className={styles.sidebar}>
           <NavLink
@@ -73,7 +82,11 @@ export const Profile = () => {
             exact>
             Профиль
           </NavLink>
-          <NavLink to="/profile/orders" activeClassName={styles.active} className={`${styles.link} text text_type_main-medium pb-5`} exact>
+          <NavLink
+            to="/profile/orders"
+            activeClassName={styles.active}
+            className={`${styles.link} text text_type_main-medium pb-5`}
+            exact>
             История заказов
           </NavLink>
           <button
@@ -111,7 +124,7 @@ export const Profile = () => {
               ref={emailRef}
               disabled={edit.email}
               onChange={onChange}
-              onIconClick={e => onIconClick(e, emailRef)}
+              onIconClick={e => onIconClick(emailRef)}
               onBlur={() => onBlur(emailRef)}
             />
           </div>

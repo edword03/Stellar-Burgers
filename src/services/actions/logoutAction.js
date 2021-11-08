@@ -1,5 +1,5 @@
 import { USER_FAILED, USER_REQUEST } from './registerUserAction';
-import { removeCookie } from '../../utils/cookie';
+import { removeCookie } from '../../utils/cookie.ts';
 export const USER_LOGOUT = 'USER_LOGOUT';
 
 export function logout() {

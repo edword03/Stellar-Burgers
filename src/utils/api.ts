@@ -1,9 +1,31 @@
 import { setCookie } from './cookie';
-const checkReponse = res => {
+
+interface IRefreshTokenRes {
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+}
+
+interface IResetPass {
+  success: boolean;
+  message: string;
+}
+
+interface IAuthUser {
+  success: boolean
+  accessToken: string
+  refreshToken: string
+  user: {
+    email: string
+    name: string
+  }
+}
+
+const checkReponse = (res: Response): Promise<IAuthUser> => {
   return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 };
 
-export const refreshToken = async () => {
+export const refreshToken = async (): Promise<IRefreshTokenRes> => {
   const res = await fetch(`${process.env.REACT_APP_URL}/auth/token`, {
     method: 'POST',
     headers: {
@@ -21,15 +43,15 @@ export const refreshToken = async () => {
   throw new Error('Network error');
 };
 
-export const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async (url: string, options: any): Promise<IAuthUser> => {
   try {
     const res = await fetch(url, options);
     return await checkReponse(res);
-  } catch (err) {
+  } catch (err: any) {
     if (err.message === 'jwt expired') {
       const refreshData = await refreshToken();
       localStorage.setItem('refreshToken', refreshData.refreshToken);
-      setCookie('accessToken', refreshData.accessToken, {expires: 1});
+      setCookie('accessToken', refreshData.accessToken, { expires: 1 });
       options.headers.authorization = refreshData.accessToken;
       const res = await fetch(url, options);
       return await checkReponse(res);
@@ -39,7 +61,7 @@ export const fetchWithRefresh = async (url, options) => {
   }
 };
 
-export async function resetPassword(body, url = '') {
+export const resetPassword = async (body: { email: string }, url = ''): Promise<IResetPass> => {
   console.log(body);
   try {
     const res = await fetch(`${process.env.REACT_APP_URL}/password-reset${url}`, {
@@ -55,7 +77,9 @@ export async function resetPassword(body, url = '') {
     }
 
     throw new Error('Network error');
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
+    return error.message
   }
+
 }
