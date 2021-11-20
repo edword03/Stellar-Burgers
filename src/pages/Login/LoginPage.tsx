@@ -10,7 +10,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { loginUser } from '../../services/actions/loginUserAction';
 
-import { IFieldType } from '../../types/common';
+import { IFieldType } from '../../types';
 
 export const Login = () => {
   const [form, setValue] = useState<IFieldType<string>>({ email: '', password: '' });

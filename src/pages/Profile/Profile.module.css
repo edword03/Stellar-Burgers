@@ -1,6 +1,7 @@
 .container {
   display: flex;
-  max-width: 900px;
+  max-width: 1225px;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -17,4 +18,9 @@
 
 .active {
   color: #fff;
+}
+
+.ordersBlock {
+  display: flex;
+  flex-direction: column;
 }

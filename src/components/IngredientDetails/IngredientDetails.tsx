@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/hooks';
 import detailsStyles from './IngredientDetails.module.css';
 
 interface IDetailsProps {
@@ -13,7 +13,7 @@ interface IDetailsProps {
 
 export const IngredientDetails: React.FC<IDetailsProps> = (props) => {
   const { image_large, name, calories, proteins, fat, carbohydrates } = useSelector(
-    (store: any) => store.details.currentIngredient,
+    store => store.details.currentIngredient,
   );
 
   return (

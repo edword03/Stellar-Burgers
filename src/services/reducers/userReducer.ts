@@ -1,17 +1,35 @@
 import { USER_REQUEST, USER_SUCCESS, USER_FAILED } from '../actions/registerUserAction';
 import { USER_LOGOUT } from '../actions/logoutAction';
-import { RESET_PASSWORD } from '../actions/resetPassword'
+import { RESET_PASSWORD } from '../actions/resetPassword';
+import { IUserActions } from '../types/userRegisterTypes';
 
-const initialState = {
-  user: {},
+interface IUser {
+  name: string;
+  email: string;
+}
+
+interface IInitialState {
+  user: IUser;
+  isAuth: boolean;
+  userRequest: boolean;
+  userSuccess: boolean;
+  userFailed: boolean;
+  wasForgot: boolean | undefined;
+}
+
+const initialState: IInitialState = {
+  user: {
+    name: '',
+    email: '',
+  },
   isAuth: false,
   userRequest: false,
   userSuccess: false,
   userFailed: false,
-  wasForgot: false
+  wasForgot: false,
 };
 
-export function userReducer(state = initialState, action) {
+export function userReducer(state = initialState, action: IUserActions): IInitialState {
   switch (action.type) {
     case USER_REQUEST:
       return { ...state, userRequest: true };
@@ -21,7 +39,7 @@ export function userReducer(state = initialState, action) {
         userRequest: false,
         userSuccess: true,
         isAuth: true,
-        user: { ...action.payload },
+        user: {...action.payload},
       };
     case USER_FAILED:
       return { ...state, userRequest: false, userFailed: true, userSuccess: false, isAuth: false };
@@ -29,13 +47,13 @@ export function userReducer(state = initialState, action) {
       return {
         ...state,
         isAuth: false,
-        user: {},
+        user: { name: '', email: '' },
         userRequest: false,
         userSuccess: false,
         userFailed: false,
       };
     case RESET_PASSWORD:
-      return {...state, wasForgot: action.payload}
+      return { ...state, wasForgot: action.payload };
     default:
       return state;
   }

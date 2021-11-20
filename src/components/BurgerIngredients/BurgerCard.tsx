@@ -1,5 +1,4 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { OPEN_MODAL } from '../../services/actions/modalAction';
 import {getConstructor} from '../../services/selectors'
 import styles from './BurgerIngredients.module.css';
@@ -7,7 +6,8 @@ import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-c
 import { useDrag } from 'react-dnd';
 import { v4 as uuidv4 } from 'uuid';
 
-import {IFieldType} from '../../types/common'
+import {IFieldType} from '../../types'
+import { useDispatch, useSelector } from '../../services/hooks';
 
 interface ICardProps {
   image: string

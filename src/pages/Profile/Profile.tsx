@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Feed } from '../../components/Feed';
 import styles from './Profile.module.css';
 import { logout } from '../../services/actions/logoutAction';
 import { getUser } from '../../services/actions/getuser';
 
-import { IFieldType } from '../../types/common';
+import { IFieldType } from '../../types';
+import { Sidebar } from './Sidebar';
+import { useDispatch, useSelector } from '../../services/hooks';
+import { WS_CLOSE, WS_OPEN } from '../../services/actions/wsAction';
+import { getCookie } from '../../utils/cookie';
+import { HistoryOrders } from './HistoryOrders';
 
 type TInitialState = {
   name: string;
@@ -15,7 +20,7 @@ type TInitialState = {
 };
 
 export const Profile = () => {
-  const { name, email } = useSelector((store: any) => store.user.user);
+  const { email, name } = useSelector(store => store.user.user);
   const initialState: TInitialState = { name: name, email: email, password: '' };
 
   const [form, setForm] = useState<TInitialState>(initialState);
@@ -25,6 +30,7 @@ export const Profile = () => {
     password: true,
   });
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
 
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -74,82 +80,67 @@ export const Profile = () => {
   return (
     <>
       <div className={`mt-30 ${styles.container}`}>
-        <aside className={styles.sidebar}>
-          <NavLink
-            to="/profile"
-            className={`${styles.link} text text_type_main-medium pt-5 pb-5`}
-            activeClassName={styles.active}
-            exact>
-            Профиль
-          </NavLink>
-          <NavLink
-            to="/profile/orders"
-            activeClassName={styles.active}
-            className={`${styles.link} text text_type_main-medium pb-5`}
-            exact>
-            История заказов
-          </NavLink>
-          <button
-            onClick={onLogOut}
-            className={`${styles.link} text text_type_main-medium pb-20`}
-            style={{ display: 'flex' }}>
-            Выход
-          </button>
-          <p className="text text_type_main-default text_color_inactive">
-            В этом разделе вы можете изменить свои персональные данные
-          </p>
-        </aside>
-        <form className="ml-15" onSubmit={onSave}>
-          <div className="mb-6">
-            <Input
-              onChange={onChange}
-              type="text"
-              name="name"
-              placeholder={'Имя'}
-              value={form.name}
-              icon={!edit.name ? 'CloseIcon' : 'EditIcon'}
-              ref={nameRef}
-              onIconClick={e => onIconClick(nameRef)}
-              onBlur={() => onBlur(nameRef)}
-              disabled={edit.name}
-            />
-          </div>
-          <div className="mb-6">
-            <Input
-              type="email"
-              name="email"
-              placeholder={'Логин'}
-              value={form.email}
-              icon={!edit.email ? 'CloseIcon' : 'EditIcon'}
-              ref={emailRef}
-              disabled={edit.email}
-              onChange={onChange}
-              onIconClick={e => onIconClick(emailRef)}
-              onBlur={() => onBlur(emailRef)}
-            />
-          </div>
-          <div>
-            <Input
-              type="password"
-              name="password"
-              placeholder={'Пароль'}
-              value={form.password}
-              icon={!edit.password ? 'CloseIcon' : 'EditIcon'}
-              ref={passwordRef}
-              disabled={edit.password}
-              onChange={onChange}
-              onIconClick={e => onIconClick(passwordRef)}
-              onBlur={() => onBlur(passwordRef)}
-            />
-          </div>
-          <div className="mt-6">
-            <Button type="secondary" onClick={onCancel}>
-              Отмена
-            </Button>
-            <Button type="primary">Сохранить</Button>
-          </div>
-        </form>
+        <Sidebar onLogOut={onLogOut} />
+        {pathname === '/profile' ? (
+          <form className="ml-15" onSubmit={onSave}>
+            <div className="mb-6">
+              <Input
+                onChange={onChange}
+                type="text"
+                name="name"
+                placeholder={'Имя'}
+                value={form.name}
+                icon={!edit.name ? 'CloseIcon' : 'EditIcon'}
+                ref={nameRef}
+                onIconClick={e => onIconClick(nameRef)}
+                onBlur={() => onBlur(nameRef)}
+                disabled={edit.name}
+              />
+            </div>
+            <div className="mb-6">
+              <Input
+                type="email"
+                name="email"
+                placeholder={'Логин'}
+                value={form.email}
+                icon={!edit.email ? 'CloseIcon' : 'EditIcon'}
+                ref={emailRef}
+                disabled={edit.email}
+                onChange={onChange}
+                onIconClick={e => onIconClick(emailRef)}
+                onBlur={() => onBlur(emailRef)}
+              />
+            </div>
+            <div>
+              <Input
+                type="password"
+                name="password"
+                placeholder={'Пароль'}
+                value={form.password}
+                icon={!edit.password ? 'CloseIcon' : 'EditIcon'}
+                ref={passwordRef}
+                disabled={edit.password}
+                onChange={onChange}
+                onIconClick={e => onIconClick(passwordRef)}
+                onBlur={() => onBlur(passwordRef)}
+              />
+            </div>
+            <div className="mt-6">
+              <Button type="secondary" onClick={onCancel}>
+                Отмена
+              </Button>
+              <Button type="primary">Сохранить</Button>
+            </div>
+          </form>
+        ) : (
+          <HistoryOrders />
+        )}
       </div>
     </>
   );
 };
+
+// orders && orders.map(order => <Feed order={order.number}
+//   title={order.name}
+//   date={order.createdAt}
+//   ingredients={order.ingredients} />

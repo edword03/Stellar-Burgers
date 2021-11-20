@@ -1,16 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ResetPassword.module.css';
 import { resetPassword, RESET_PASSWORD } from '../../services/actions/resetPassword';
 
-import { IFieldType } from '../../types/common';
+import { IFieldType } from '../../types';
+import { useDispatch, useSelector } from '../../services/hooks';
 
 export const ResetPassword = () => {
   const [form, setForm] = useState<IFieldType<string>>({ password: '', token: '' });
   const [isVisisble, setIsVisible] = useState(false);
-  const { wasForgot } = useSelector((store: any) => store.user);
+  const { wasForgot } = useSelector(store => store.user);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -25,7 +25,7 @@ export const ResetPassword = () => {
     return () => {
       dispatch({
         type: RESET_PASSWORD,
-        payload: false,
+        wasForgot: false,
       });
     };
   }, [dispatch]);

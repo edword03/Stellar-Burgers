@@ -1,8 +1,8 @@
 import React, { useMemo, useCallback, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
 import {useHistory} from 'react-router-dom'
-import { sendOrder, CLOSE_ORDER } from '../../services/actions/orderAction';
-import { ADD_ITEM, ADD_BUN, REMOVE_ITEM, MOVE_ITEM } from '../../services/actions/constructorAction';
+import { sendOrder, CLOSE_ORDER, OPEN_MODAL_ORDER } from '../../services/actions/orderAction';
+import { ADD_ITEM, ADD_BUN, REMOVE_ITEM, MOVE_ITEM, CLEAR_CONSTRUCTOR } from '../../services/actions/constructorAction';
 import {getConstructor} from '../../services/selectors'
 import { useDrop } from 'react-dnd';
 
@@ -13,11 +13,12 @@ import { DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-bu
 import { Modal } from '../Modal';
 import { OrderDetails } from '../OrderDetails';
 import { Stub } from './Stub';
+import { IGetIngredients } from '../../types';
 
 export const BurgerConstructor = () => {
   const { ingredientsConstructor, bunItems } = useSelector(getConstructor);
-  const { orderFailed, isModal } = useSelector((store: any) => store.order);
-  const {isAuth} = useSelector((store: any) => store.user)
+  const { orderFailed, isModal } = useSelector(store => store.order);
+  const {isAuth} = useSelector(store => store.user)
   const [error, setError] = useState<boolean>(false)
   const dispatch = useDispatch();
   const history = useHistory()
@@ -78,8 +79,8 @@ export const BurgerConstructor = () => {
     [ingredientsConstructor, bunItems],
   );
 
-  const getIngredientId = (arr = [], id: string) => {
-    return { ingredients: [...arr.map((item: any) => item._id), id] };
+  const getIngredientId = (arr: Array<IGetIngredients>, id: string) => {
+    return { ingredients: [...arr.map(item => item._id), id] };
   };
 
   const closeModal = () =>
@@ -93,6 +94,12 @@ export const BurgerConstructor = () => {
     if (isAuth) {
       if (ingredientsConstructor.length > 0 && bunItems.price > 0) {
         dispatch(sendOrder(orderList));
+        dispatch({
+          type: CLEAR_CONSTRUCTOR
+        })
+        dispatch({
+          type: OPEN_MODAL_ORDER
+        })
         setError(false)
       } else {
         setError(true)
@@ -109,7 +116,7 @@ export const BurgerConstructor = () => {
   const removeItem = (id: string) => {
     dispatch({
       type: REMOVE_ITEM,
-      id,
+      payload: id,
     });
   };
 

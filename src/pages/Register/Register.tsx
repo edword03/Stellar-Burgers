@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import {
   EmailInput,
@@ -11,10 +10,11 @@ import {
 import styles from './Register.module.css';
 import { registerUser } from '../../services/actions/registerUserAction';
 
-import { IFieldType } from '../../types/common';
+import { IRegisterType } from '../../types';
+import { useDispatch, useSelector } from '../../services/hooks';
 
 export const Register = () => {
-  const [form, setValue] = useState<IFieldType<string>>({ name: '', email: '', password: '' });
+  const [form, setValue] = useState<IRegisterType>({ name: '', email: '', password: '' });
   const [error, setError] = useState<true | false>(false);
   const dispatch = useDispatch();
   const { isAuth } = useSelector((store: any) => store.user);

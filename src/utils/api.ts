@@ -1,3 +1,4 @@
+import { IRegisterUser, IResetPass } from '../types';
 import { setCookie } from './cookie';
 
 interface IRefreshTokenRes {
@@ -6,22 +7,9 @@ interface IRefreshTokenRes {
   refreshToken: string;
 }
 
-interface IResetPass {
-  success: boolean;
-  message: string;
-}
 
-interface IAuthUser {
-  success: boolean
-  accessToken: string
-  refreshToken: string
-  user: {
-    email: string
-    name: string
-  }
-}
 
-const checkReponse = (res: Response): Promise<IAuthUser> => {
+const checkReponse = (res: Response): Promise<IRegisterUser> => {
   return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 };
 
@@ -43,7 +31,7 @@ export const refreshToken = async (): Promise<IRefreshTokenRes> => {
   throw new Error('Network error');
 };
 
-export const fetchWithRefresh = async (url: string, options: any): Promise<IAuthUser> => {
+export const fetchWithRefresh = async (url: string, options: any): Promise<IRegisterUser> => {
   try {
     const res = await fetch(url, options);
     return await checkReponse(res);
