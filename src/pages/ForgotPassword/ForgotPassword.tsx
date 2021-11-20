@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from '../../services/hooks';
 import { Link, useHistory } from 'react-router-dom';
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ForgotPassword.module.css';
-import { AppHeader } from '../../components/AppHeader';
 import { RESET_PASSWORD } from '../../services/actions/resetPassword';
 import { resetPassword } from '../../utils/api';
 

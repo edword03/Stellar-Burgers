@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
+import { RootState } from './types';
 
-export const selectAllIngredients = state => state.ingredients.ingredientItems
-export const getConstructor = state => state.counstructor
+export const selectAllIngredients = (state: RootState) => state.ingredients.ingredientItems
+export const getConstructor = (state: RootState) => state.counstructor
 
 export const getBuns = createSelector(
   selectAllIngredients,

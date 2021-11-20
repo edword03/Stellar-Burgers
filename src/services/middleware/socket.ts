@@ -1,5 +1,5 @@
-import { Action, Middleware, MiddlewareAPI } from 'redux';
-import { TWsActions, WS_CLOSE, WS_MESSAGE, WS_OPEN, WS_SUCCESS } from '../actions/wsAction';
+import { Middleware, MiddlewareAPI } from 'redux';
+import { TWsActions, WS_CLOSE, WS_MESSAGE, WS_OPEN, WS_SUCCESS, WS_SEND_ORDER } from '../actions/wsAction';
 import { AppDispatch, RootState } from '../types';
 
 export const socketMiddleware = (): Middleware => {
@@ -7,10 +7,10 @@ export const socketMiddleware = (): Middleware => {
     let socket: WebSocket | null = null;
 
     return next => (action: TWsActions) => {
-      const { getState, dispatch } = store;
+      const { dispatch } = store;
       const { type, payload } = action;
 
-      if (type === 'WS_OPEN') {
+      if (type === WS_OPEN) {
         socket = new WebSocket(action.payload);
         console.log('conected');
       }
@@ -33,12 +33,12 @@ export const socketMiddleware = (): Middleware => {
           console.error(`Ошибка`, event);
         };
 
-        if (type === 'WS_SEND_ORDER') {
+        if (type === WS_SEND_ORDER) {
           const message = payload;
           socket.send(JSON.stringify(message))
         }
 
-        if (type === 'WS_CLOSE') {
+        if (type === WS_CLOSE) {
           socket.close(1000, 'close conection');
           socket = null
         }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Feed } from '../../components/Feed';
 import styles from './Profile.module.css';
 import { logout } from '../../services/actions/logoutAction';
 import { getUser } from '../../services/actions/getuser';
@@ -9,8 +8,6 @@ import { getUser } from '../../services/actions/getuser';
 import { IFieldType } from '../../types';
 import { Sidebar } from './Sidebar';
 import { useDispatch, useSelector } from '../../services/hooks';
-import { WS_CLOSE, WS_OPEN } from '../../services/actions/wsAction';
-import { getCookie } from '../../utils/cookie';
 import { HistoryOrders } from './HistoryOrders';
 
 type TInitialState = {

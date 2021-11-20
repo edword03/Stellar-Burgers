@@ -1,5 +1,4 @@
 import { AppDispatch, AppThunk } from '../types';
-import { CLEAR_CONSTRUCTOR } from './constructorAction';
 import { IOrderBody, IOrderRequestBody } from '../../types';
 import { IOrderFailed, IOrderRequest, IOrderSuccess } from '../types/orderType';
 import { getCookie } from '../../utils/cookie';

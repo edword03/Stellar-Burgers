@@ -1,7 +1,6 @@
 import React from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { v4 } from 'uuid';
-import { useParams } from 'react-router-dom';
 import { useSelector } from '../../services/hooks';
 import styles from './OrderInfo.module.css';
 

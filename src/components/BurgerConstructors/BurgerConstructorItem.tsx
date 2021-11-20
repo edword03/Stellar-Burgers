@@ -4,18 +4,18 @@ import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-comp
 import { useDrag, useDrop } from 'react-dnd';
 
 interface IProps {
-  children: React.ReactNode;
-  type: string;
+  children?: React.ReactNode;
+  type?: string;
   typeItem?: 'bottom' | 'top' | undefined;
   name: string;
   image: string;
   price: number;
-  isLocked: boolean;
-  onRemove: (value: string) => void;
-  _id: string;
-  move: (dragIndex: number, hoverIndex: number) => void;
+  isLocked?: boolean;
+  onRemove?: (value: string) => void;
+  _id?: string;
+  move?: (dragIndex: number, hoverIndex: number) => void;
   index: number;
-  itemId: string;
+  itemId?: string;
 }
 
 export const BurgerConstructorItem: React.FC<IProps> = ({
@@ -62,7 +62,7 @@ export const BurgerConstructorItem: React.FC<IProps> = ({
         return;
       }
 
-      move(dragIndex, hoverIndex);
+      move && move(dragIndex, hoverIndex);
       item.index = hoverIndex;
     },
   });
@@ -94,7 +94,7 @@ export const BurgerConstructorItem: React.FC<IProps> = ({
         price={price}
         type={typeItem}
         isLocked={isLocked}
-        handleClose={() => onRemove(itemId)}
+        handleClose={() => onRemove && itemId && onRemove(itemId)}
       />
     </article>
   );

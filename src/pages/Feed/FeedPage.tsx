@@ -17,7 +17,6 @@ export const FeedPage = () => {
   console.log('pending: ', pending);
 
   useEffect(() => {
-    dispatch({ type: WS_CLOSE });
     dispatch({ type: WS_OPEN, payload: 'wss://norma.nomoreparties.space/orders/all' });
     return () => {
       dispatch({ type: WS_CLOSE });

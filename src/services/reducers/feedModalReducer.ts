@@ -1,5 +1,3 @@
-import { IOrderType } from '../../types';
-
 export const OPEN_FEED_MODAL: 'OPEN_FEED_MODAL' = 'OPEN_FEED_MODAL';
 export const CLOSE_FEED_MODAL: 'CLOSE_FEED_MODAL' = 'CLOSE_FEED_MODAL';
 

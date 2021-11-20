@@ -17,7 +17,7 @@ export const Register = () => {
   const [form, setValue] = useState<IRegisterType>({ name: '', email: '', password: '' });
   const [error, setError] = useState<true | false>(false);
   const dispatch = useDispatch();
-  const { isAuth } = useSelector((store: any) => store.user);
+  const { isAuth } = useSelector(store => store.user);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;

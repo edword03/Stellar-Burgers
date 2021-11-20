@@ -1,8 +1,5 @@
 import React, { useMemo } from 'react';
-
 import { v4 } from 'uuid';
-import { formatDistance, subDays, parseJSON } from 'date-fns';
-import { ru } from 'date-fns/locale';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from '../../services/hooks';
 import styles from './Feed.module.css';
@@ -26,13 +23,7 @@ export const Feed: React.FC<IPropsType> = ({
   isAccount,
   status,
 }) => {
-  const date2 = (Date.now() - Date.parse(date)) / 1000;
   const dispatch = useDispatch();
-
-  const newDate = formatDistance(subDays(Date.now(), date2 / 3600 / 24), new Date(), {
-    locale: ru,
-    addSuffix: true,
-  });
 
   const { ingredientItems } = useSelector(store => store.ingredients);
   const sortItems = useMemo(

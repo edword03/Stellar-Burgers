@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from '../../services/hooks';
 import { Location } from 'history';
-import { Route, Switch, useLocation, useHistory, useParams } from 'react-router-dom';
+import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import {
   Home,
   Login,
@@ -24,7 +24,6 @@ import { AppHeader } from '../AppHeader';
 import { CLOSE_MODAL } from '../../services/actions/modalAction';
 import { OrderInfo } from '../OrderInfo';
 import { CLOSE_FEED_MODAL } from '../../services/reducers/feedModalReducer';
-import { HistoryOrders } from '../../pages/Profile/HistoryOrders';
 import { getCookie } from '../../utils/cookie';
 
 type TLocation = {

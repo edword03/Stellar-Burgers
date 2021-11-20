@@ -14,7 +14,7 @@ interface IConstructoItems extends IGetIngredients {
 interface IActionType {
   type: string;
   payload: any;
-  isLocked?: boolean
+  isLocked?: boolean;
 }
 
 interface IInitialState {
@@ -23,13 +23,33 @@ interface IInitialState {
     price: number;
     _id: string;
     isLocked: boolean;
+    name: string;
+    index: number;
+    type: string;
+    image: string;
+    image_mobile: string;
+    image_large: string;
+    __v: number;
+    itemId: string;
   };
   draggedItem: {};
 }
 
 const initialState: IInitialState = {
   ingredientsConstructor: [],
-  bunItems: { price: 0, _id: '', isLocked: false },
+  bunItems: {
+    price: 0,
+    _id: '',
+    isLocked: false,
+    name: '',
+    index: 0,
+    type: '',
+    image: '',
+    image_large: '',
+    image_mobile: '',
+    __v: 0,
+    itemId: ''
+  },
   draggedItem: {},
 };
 

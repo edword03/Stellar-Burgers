@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { ModalOverlay } from '../ModalOverlay';
 import modalStyles from './Modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useParams } from 'react-router-dom';
 import { useSelector } from '../../services/hooks';
 
 interface IModalProps {
