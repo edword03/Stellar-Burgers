@@ -1,13 +1,14 @@
 import React, { useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/hooks';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ConstructorStyles from './BurgerIngredients.module.css';
 import { IngredientBlock } from './IngredientBlock';
 import { getBuns, getMain, getSauce } from '../../services/selectors';
+import { Loader } from '../Loader';
 
 export const BurgerIngredients = () => {
   const { ingredientsRequest, ingredientsFaled, ingredientsSuccess } = useSelector(
-    (store: any) => store.ingredients,
+    store => store.ingredients,
   );
   const buns = useSelector(getBuns);
   const sauce = useSelector(getSauce);
@@ -63,16 +64,15 @@ export const BurgerIngredients = () => {
           className={`${ConstructorStyles.main} custom-scroll`}
           onScroll={handleTabs}
           ref={mainBlock}>
-          {ingredientsRequest ? <p>Загрузка</p> : null}
-          {!ingredientsFaled || ingredientsSuccess ? (
+          {ingredientsRequest ? <Loader /> : null}
+          {!ingredientsFaled && ingredientsSuccess && (
             <>
               <IngredientBlock id="buns" title="Булки" list={buns} ref={bunRef} />
               <IngredientBlock id="sauce" title="Соусы" list={sauce} ref={sauceRef} />
               <IngredientBlock id="main" title="Начинки" list={mainIngredients} ref={mainRef} />
             </>
-          ) : (
-            <p>Ошибка</p>
           )}
+          {ingredientsFaled && <p>Ошибка запрооса</p>}
         </main>
       </section>
     </>

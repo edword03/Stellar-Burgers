@@ -1,9 +1,15 @@
 import React, { useMemo, useCallback, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import {useHistory} from 'react-router-dom'
-import { sendOrder, CLOSE_ORDER } from '../../services/actions/orderAction';
-import { ADD_ITEM, ADD_BUN, REMOVE_ITEM, MOVE_ITEM } from '../../services/actions/constructorAction';
-import {getConstructor} from '../../services/selectors'
+import { useDispatch, useSelector } from '../../services/hooks';
+import { useHistory } from 'react-router-dom';
+import { sendOrder, CLOSE_ORDER, OPEN_MODAL_ORDER } from '../../services/actions/orderAction';
+import {
+  ADD_ITEM,
+  ADD_BUN,
+  REMOVE_ITEM,
+  MOVE_ITEM,
+  CLEAR_CONSTRUCTOR,
+} from '../../services/actions/constructorAction';
+import { getConstructor } from '../../services/selectors';
 import { useDrop } from 'react-dnd';
 
 import BurgerIngredientStyles from './BurgerConstructor.module.css';
@@ -13,16 +19,17 @@ import { DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-bu
 import { Modal } from '../Modal';
 import { OrderDetails } from '../OrderDetails';
 import { Stub } from './Stub';
+import { IGetIngredients } from '../../types';
 
 export const BurgerConstructor = () => {
   const { ingredientsConstructor, bunItems } = useSelector(getConstructor);
-  const { orderFailed, isModal } = useSelector((store: any) => store.order);
-  const {isAuth} = useSelector((store: any) => store.user)
-  const [error, setError] = useState<boolean>(false)
+  const { orderFailed, isModal } = useSelector(store => store.order);
+  const { isAuth } = useSelector(store => store.user);
+  const [error, setError] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const history = useHistory()
+  const history = useHistory();
 
-  const [{canDrop}, dropTarget] = useDrop({
+  const [, dropTarget] = useDrop({
     accept: 'bun',
     drop(item) {
       dispatch({
@@ -32,11 +39,11 @@ export const BurgerConstructor = () => {
       });
     },
     collect: monitor => ({
-      canDrop: monitor.canDrop()
-    })
+      canDrop: monitor.canDrop(),
+    }),
   });
 
-  const [{}, secondBunRef] = useDrop({
+  const [, secondBunRef] = useDrop({
     accept: 'bun',
     drop(item) {
       dispatch({
@@ -46,11 +53,11 @@ export const BurgerConstructor = () => {
       });
     },
     collect: monitor => ({
-      isHover: monitor.isOver()
-    })
+      isHover: monitor.isOver(),
+    }),
   });
 
-  const [{isHover}, ingrTarget] = useDrop({
+  const [, ingrTarget] = useDrop({
     accept: 'IngredientItems',
     drop(item) {
       dispatch({
@@ -60,26 +67,31 @@ export const BurgerConstructor = () => {
     },
   });
 
-  const borderColor = isHover ? '3px dashed #4C4CFF' : '';
-  const moveItem = useCallback((dragIndex: number, hoverIdnex: number) => {
-    const dragItem = ingredientsConstructor[dragIndex]
-    const newItem = [...ingredientsConstructor]
-    newItem.splice(dragIndex, 1)
-    newItem.splice(hoverIdnex, 0, dragItem)
+ 
+  const moveItem = useCallback(
+    (dragIndex: number, hoverIdnex: number) => {
+      const dragItem = ingredientsConstructor[dragIndex];
+      const newItem = [...ingredientsConstructor];
+      newItem.splice(dragIndex, 1);
+      newItem.splice(hoverIdnex, 0, dragItem);
 
-    dispatch({
-      type: MOVE_ITEM,
-      payload: newItem
-    })
-  }, [ingredientsConstructor, dispatch])
+      dispatch({
+        type: MOVE_ITEM,
+        payload: newItem,
+      });
+    },
+    [ingredientsConstructor, dispatch],
+  );
 
   const totalPrice = useMemo(
-    () => ingredientsConstructor.reduce((acc: number, cur: {price: number}) => acc + cur.price, 0) + bunItems.price * 2,
+    () =>
+      ingredientsConstructor.reduce((acc: number, cur: { price: number }) => acc + cur.price, 0) +
+      bunItems.price * 2,
     [ingredientsConstructor, bunItems],
   );
 
-  const getIngredientId = (arr = [], id: string) => {
-    return { ingredients: [...arr.map((item: any) => item._id), id] };
+  const getIngredientId = (arr: Array<IGetIngredients>, id: string) => {
+    return { ingredients: [...arr.map(item => item._id), id] };
   };
 
   const closeModal = () =>
@@ -93,34 +105,46 @@ export const BurgerConstructor = () => {
     if (isAuth) {
       if (ingredientsConstructor.length > 0 && bunItems.price > 0) {
         dispatch(sendOrder(orderList));
-        setError(false)
+        dispatch({
+          type: CLEAR_CONSTRUCTOR,
+        });
+        dispatch({
+          type: OPEN_MODAL_ORDER,
+        });
+        setError(false);
       } else {
-        setError(true)
+        setError(true);
       }
     } else {
-      history.replace('/login')
+      history.replace('/login');
     }
 
     setTimeout(() => {
-      setError(false)
-    }, 2000)
+      setError(false);
+    }, 2000);
   };
 
   const removeItem = (id: string) => {
     dispatch({
       type: REMOVE_ITEM,
-      id,
+      payload: id,
     });
   };
 
-  const errorClass = error ? '1px solid red' : ''
+  const errorClass = error ? '1px solid red' : '';
 
   return (
     <>
       <section className={`mt-25 pr-4 pl-4`}>
         <div ref={ref => dropTarget(ref)}>
           {bunItems.name ? (
-            <BurgerConstructorItem {...bunItems} typeItem='top' name={bunItems.name + '(верх)'} />
+            <BurgerConstructorItem
+              typeItem="top"
+              name={bunItems.name + '(верх)'}
+              index={bunItems.index}
+              image={bunItems.image}
+              price={bunItems.price}
+            />
           ) : (
             <Stub type="top" errorClass={errorClass} />
           )}
@@ -129,7 +153,7 @@ export const BurgerConstructor = () => {
           className={`${BurgerIngredientStyles.ingredientBlock} custom-scroll`}
           ref={ref => ingrTarget(ref)}>
           {ingredientsConstructor.length > 0 ? (
-            ingredientsConstructor.map((item: any, i: number) => (
+            ingredientsConstructor.map((item, i: number) => (
               <BurgerConstructorItem
                 {...item}
                 isLocked={false}
@@ -139,7 +163,7 @@ export const BurgerConstructor = () => {
                 // ref={ingrTarget}
                 onRemove={removeItem}>
                 <div className="mr-2">
-                  <DragIcon type='primary' />
+                  <DragIcon type="primary" />
                 </div>
               </BurgerConstructorItem>
             ))
@@ -149,7 +173,13 @@ export const BurgerConstructor = () => {
         </div>
         <div ref={ref => secondBunRef(ref)}>
           {bunItems.name ? (
-            <BurgerConstructorItem {...bunItems} typeItem='bottom' name={bunItems.name + '(низ)'} />
+            <BurgerConstructorItem
+              typeItem="bottom"
+              name={bunItems.name + '(низ)'}
+              index={bunItems.index}
+              image={bunItems.image}
+              price={bunItems.price}
+            />
           ) : (
             <Stub type="bottom" errorClass={errorClass} />
           )}
@@ -158,7 +188,7 @@ export const BurgerConstructor = () => {
         <div className={`mt-10 ${BurgerIngredientStyles.price}`}>
           <p className={`mr-10`}>
             <span className="mr-2 text text_type_digits-medium">{totalPrice}</span>
-            <CurrencyIcon type='primary' />
+            <CurrencyIcon type="primary" />
           </p>
           <Button type="primary" size="large" onClick={sendOrderData}>
             Оформить заказ

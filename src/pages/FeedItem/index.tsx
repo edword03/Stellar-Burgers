@@ -1,0 +1,1 @@
+export { FeedItemPage } from './FeedItemPage';

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Location } from 'history';
 import { Link, Redirect, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import styles from './Login.module.css';
 import {
   EmailInput,
@@ -10,12 +9,13 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { loginUser } from '../../services/actions/loginUserAction';
 
-import { IFieldType } from '../../types/common';
+import { IFieldType } from '../../types';
+import { useDispatch, useSelector } from '../../services/hooks';
 
 export const Login = () => {
   const [form, setValue] = useState<IFieldType<string>>({ email: '', password: '' });
   const dispatch = useDispatch();
-  const { isAuth } = useSelector((store: any) => store.user);
+  const { isAuth } = useSelector(store => store.user);
   const { state } = useLocation<{ from: Location }>();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
