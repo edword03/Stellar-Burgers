@@ -1,24 +1,27 @@
 describe('open modal and drag ingredients to constructor block', () => {
   it('should be aviable on https://localhost:300', () => {
-    cy.visit('http://localhost:3000')
+    cy.visit('/')
   })
 
   it('should open modal and check title contains then close modal', () => {
     cy.get('#bunBlock').find('h3').should('have.text', 'Булки')
     cy.get('#bunBlock').find('a').first().click()
+    cy.wait(1000)
     cy.get('#root-modal').find('h2').should('have.text', 'Детали ингредиента')
-    cy.get('#root-modal').find('p.IngredientDetails_title__ffrAR').should('have.text', 'Краторная булка N-200i')
+    cy.get('#root-modal').find('[data-testid=titleIngredient]').should('have.text', 'Краторная булка N-200i')
     cy.get('#root-modal').find('svg').click()
 
     cy.get('#sauceBlock').find('h3').should('have.text', 'Соусы')
     cy.get('#sauceBlock').find('a').last().click()
+    cy.wait(1000)
     cy.get('#root-modal').find('h2').should('have.text', 'Детали ингредиента')
-    cy.get('#root-modal').find('p.IngredientDetails_title__ffrAR').should('have.text', 'Соус с шипами Антарианского плоскоходца')
+    cy.get('#root-modal').find('[data-testid=titleIngredient]').should('have.text', 'Соус с шипами Антарианского плоскоходца')
     cy.get('#root-modal').find('svg').click()
 
     cy.get('#mainBlock').find('h3').should('have.text', 'Начинки')
     cy.get('#sauceBlock').find('a:nth-child(2)').click()
-    cy.get('#root-modal').find('p.IngredientDetails_title__ffrAR').should('have.text', 'Соус фирменный Space Sauce')
+    cy.wait(1000)
+    cy.get('#root-modal').find('[data-testid=titleIngredient]').should('have.text', 'Соус фирменный Space Sauce')
     cy.get('#root-modal').find('svg').click()
     // cy.get('main.custom-scroll').scrollTo('top')
   })
@@ -49,8 +52,8 @@ describe('open modal and drag ingredients to constructor block', () => {
 
   it('should log in user', () => {
     cy.get('[data-testid=login]').find('h2').should('have.text', 'Вход')
-    cy.get('[data-testid=login]').find('.input__icon-action').first().click().type('vefowen715@smuvaj.com')
-    cy.get('[data-testid=login]').find('.input_type_password').last().click().type('1234')
+    cy.get('[data-testid=login]').find('.input__icon-action').first().click().type('dared83735@d3ff.com')
+    cy.get('[data-testid=login]').find('.input_type_password').last().click().type('1234567')
     cy.get('[data-testid=login]').find('button').click()
   })
 
