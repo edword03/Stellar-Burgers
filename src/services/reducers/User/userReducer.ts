@@ -1,7 +1,7 @@
-import { USER_REQUEST, USER_SUCCESS, USER_FAILED } from '../actions/registerUserAction';
-import { USER_LOGOUT } from '../actions/logoutAction';
-import { RESET_PASSWORD } from '../actions/resetPassword';
-import { IUserActions } from '../types/userRegisterTypes';
+import { USER_REQUEST, USER_SUCCESS, USER_FAILED } from '../../actions/registerUserAction';
+import { USER_LOGOUT } from '../../actions/logoutAction';
+import { RESET_PASSWORD } from '../../actions/resetPassword';
+import { IUserActions } from '../../types/userRegisterTypes';
 
 interface IUser {
   name: string;
@@ -17,7 +17,7 @@ interface IInitialState {
   wasForgot: boolean | undefined;
 }
 
-const initialState: IInitialState = {
+export const initialState: IInitialState = {
   user: {
     name: '',
     email: '',

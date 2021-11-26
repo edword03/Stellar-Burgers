@@ -37,7 +37,7 @@ export const Login = () => {
 
   return (
     <>
-      <div className={`${styles.login} pt-30`}>
+      <div className={`${styles.login} pt-30`} data-testid='login'>
         <h2 className="text text_type_main-medium mb-6">Вход</h2>
         <form className={`${styles.form} pb-20`} onSubmit={onSubmit}>
           <div className={`${styles.inputBlock} mb-6`}>

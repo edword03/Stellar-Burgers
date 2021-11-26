@@ -1,5 +1,5 @@
-import { IGetIngredients } from '../../types';
-import { OPEN_MODAL, CLOSE_MODAL } from '../actions/modalAction';
+import { IGetIngredients } from '../../../types';
+import { OPEN_MODAL, CLOSE_MODAL } from '../../actions/modalAction';
 
 interface IInitialState {
   isOpen: boolean;

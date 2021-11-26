@@ -4,7 +4,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { useDispatch, useSelector } from '../../services/hooks';
 import styles from './Feed.module.css';
 import { IngredientItem } from './IngredientItem';
-import { OPEN_FEED_MODAL } from '../../services/reducers/feedModalReducer';
+import { OPEN_FEED_MODAL } from '../../services/reducers/FeedModal/feedModalReducer';
 
 interface IPropsType {
   order: number;

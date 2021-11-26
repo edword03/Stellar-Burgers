@@ -4,8 +4,8 @@ import {
   SEND_DATA_FAILED,
   CLOSE_ORDER,
   OPEN_MODAL_ORDER,
-} from '../actions/orderAction';
-import { TOrderType } from '../types/orderType';
+} from '../../actions/orderAction';
+import { TOrderType } from '../../types/orderType';
 
 interface IInitialState {
   orderRequest: boolean;
@@ -20,7 +20,7 @@ interface IInitialState {
   };
 }
 
-const initialState: IInitialState = {
+export const initialState: IInitialState = {
   orderRequest: false,
   orderSucces: false,
   orderFailed: false,
@@ -37,7 +37,13 @@ const initialState: IInitialState = {
 export function orderReducer(state = initialState, action: TOrderType): IInitialState {
   switch (action.type) {
     case SEND_DATA_REQUEST:
-      return { ...state, orderRequest: true, orderFailed: false, orderSucces: false, isModal: true };
+      return {
+        ...state,
+        orderRequest: true,
+        orderFailed: false,
+        orderSucces: false,
+        isModal: true,
+      };
     case SEND_DATA_SUCCESS:
       return {
         ...state,
@@ -57,6 +63,7 @@ export function orderReducer(state = initialState, action: TOrderType): IInitial
         orderFailed: true,
         orderSucces: false,
         orderRequest: false,
+        isModal: false,
         order: {
           name: '',
           number: 0,
@@ -65,7 +72,9 @@ export function orderReducer(state = initialState, action: TOrderType): IInitial
       };
     case CLOSE_ORDER:
       return {
-        ...state,
+        orderRequest: false,
+        orderSucces: false,
+        orderFailed: false,
         isModal: false,
         order: {
           name: '',
@@ -73,8 +82,6 @@ export function orderReducer(state = initialState, action: TOrderType): IInitial
           success: false,
         },
       };
-    case OPEN_MODAL_ORDER:
-      return {...state, isModal: true}
     default:
       return state;
   }

@@ -92,6 +92,7 @@ export const Profile = () => {
                 onIconClick={e => onIconClick(nameRef)}
                 onBlur={() => onBlur(nameRef)}
                 disabled={edit.name}
+                size='default'
               />
             </div>
             <div className="mb-6">

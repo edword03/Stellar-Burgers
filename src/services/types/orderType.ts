@@ -8,7 +8,6 @@ export interface IOrderRequest {
 
 export interface IOrderSuccess {
   type: typeof SEND_DATA_SUCCESS;
-  order: number
   orderBody: IOrderRequestBody
 }
 
@@ -24,4 +23,4 @@ export interface IOpenModalOrder {
   type: typeof OPEN_MODAL_ORDER
 }
 
-export type TOrderType = IOrderRequest | IOrderSuccess | IOrderFailed | ICloseOrder | IOpenModalOrder;
+export type TOrderType = IOrderRequest | IOrderSuccess | IOrderFailed | ICloseOrder | IOpenModalOrder | {type: ''};

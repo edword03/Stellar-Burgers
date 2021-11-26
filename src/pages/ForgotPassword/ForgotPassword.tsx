@@ -6,8 +6,12 @@ import styles from './ForgotPassword.module.css';
 import { RESET_PASSWORD } from '../../services/actions/resetPassword';
 import { resetPassword } from '../../utils/api';
 
+
 export const ForgotPassword = () => {
+  const REGEXP = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
   const [email, setEmail] = useState<string>('');
+  const [isError, setIsError] = useState<boolean>(false)
   const { isAuth } = useSelector(store => store.user);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -25,17 +29,25 @@ export const ForgotPassword = () => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsError(false)
 
-    const data = await resetPassword({ email });
-    console.log('data: ', data);
+    if (email && REGEXP.test(email)) {
+      const data = await resetPassword({ email });
+      console.log('data: ', data);
 
-    if (data.success) {
-      dispatch({
-        type: RESET_PASSWORD,
-        wasForgot: true,
-      });
-      history.replace({ pathname: '/reset-password' });
+      if (data.success) {
+        dispatch({
+          type: RESET_PASSWORD,
+          wasForgot: true,
+        });
+        history.replace({ pathname: '/reset-password' });
+      }
+    } 
+
+    if (email.length <= 0) {
+      setIsError(true)
     }
+
   };
 
   return (
@@ -45,6 +57,7 @@ export const ForgotPassword = () => {
         <form className={`${styles.form} pb-20`} onSubmit={onSubmit}>
           <div className={`${styles.inputBlock} mb-6`}>
             <EmailInput size="default" value={email} onChange={onChange} name="login" />
+            {isError && <span className={`${styles.errorText} text text_type_main-default pl-5`}>Заполните поле</span>}
           </div>
           <div className={styles.container}>
             <Button size="large" type="primary">

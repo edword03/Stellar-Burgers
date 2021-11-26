@@ -2,9 +2,9 @@ import {
   GET_INGREDIENTS_FAILED,
   GET_INGREDIENTS_REQUEST,
   GET_INGREDIENTS_SUCCESS,
-} from '../actions/ingredientsActions';
-import { IGetIngredients } from '../../types';
-import { IIngredientsActions } from '../types/ingredientsTypes';
+} from '../../actions/ingredientsActions';
+import { IGetIngredients } from '../../../types';
+import { IIngredientsActions } from '../../types/ingredientsTypes';
 
 interface IInitialState {
   ingredientItems: Array<IGetIngredients>;

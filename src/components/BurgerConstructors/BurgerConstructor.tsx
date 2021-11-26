@@ -74,6 +74,7 @@ export const BurgerConstructor = () => {
       const newItem = [...ingredientsConstructor];
       newItem.splice(dragIndex, 1);
       newItem.splice(hoverIdnex, 0, dragItem);
+      console.log('newItem: ', newItem);
 
       dispatch({
         type: MOVE_ITEM,
@@ -108,9 +109,6 @@ export const BurgerConstructor = () => {
         dispatch({
           type: CLEAR_CONSTRUCTOR,
         });
-        dispatch({
-          type: OPEN_MODAL_ORDER,
-        });
         setError(false);
       } else {
         setError(true);
@@ -136,7 +134,7 @@ export const BurgerConstructor = () => {
   return (
     <>
       <section className={`mt-25 pr-4 pl-4`}>
-        <div ref={ref => dropTarget(ref)}>
+        <div ref={ref => dropTarget(ref)} data-testid='dropBun'>
           {bunItems.name ? (
             <BurgerConstructorItem
               typeItem="top"
@@ -150,6 +148,7 @@ export const BurgerConstructor = () => {
           )}
         </div>
         <div
+          data-testid='dropIngredient'
           className={`${BurgerIngredientStyles.ingredientBlock} custom-scroll`}
           ref={ref => ingrTarget(ref)}>
           {ingredientsConstructor.length > 0 ? (
