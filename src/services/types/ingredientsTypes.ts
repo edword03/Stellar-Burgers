@@ -18,4 +18,4 @@ export interface IGetIngredientsFailedType {
 export type IIngredientsActions =
   | IGetIngredientsRequestType
   | IGetIngredientsSuccessAction
-  | IGetIngredientsFailedType;
+  | IGetIngredientsFailedType | {type: ''};

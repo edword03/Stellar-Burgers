@@ -21,7 +21,7 @@ export const IngredientDetails: React.FC<IDetailsProps> = (props) => {
       <div className={detailsStyles.imgContainer}>
         <img src={image_large || props.image_large} alt={name || props.name} />
       </div>
-      <p className={`text text_type_main-medium mt-4 mb-8 ${detailsStyles.title}`}>{name || props.name}</p>
+      <p className={`text text_type_main-medium mt-4 mb-8 ${detailsStyles.title}`} data-testid='titleIngredient'>{name || props.name}</p>
       <div className={detailsStyles.nurtions}>
         <p className={detailsStyles.nurtionText}>
           Калории,ккал

@@ -46,7 +46,7 @@ export const BurgerIngredients = () => {
     <>
       <section className={ConstructorStyles.burgerConstructor}>
         <h2 className={`${ConstructorStyles.title} mt-10 mb-5`}>Соберите бургер</h2>
-        <div className={`${ConstructorStyles.tabs}`}>
+        <div className={`${ConstructorStyles.tabs}`} data-testid='tabs'>
           <Tab value="one" active={currentTab === 'one'} onClick={() => scrollToBlock('one', 0)}>
             Булки
           </Tab>
@@ -67,9 +67,9 @@ export const BurgerIngredients = () => {
           {ingredientsRequest ? <Loader /> : null}
           {!ingredientsFaled && ingredientsSuccess && (
             <>
-              <IngredientBlock id="buns" title="Булки" list={buns} ref={bunRef} />
-              <IngredientBlock id="sauce" title="Соусы" list={sauce} ref={sauceRef} />
-              <IngredientBlock id="main" title="Начинки" list={mainIngredients} ref={mainRef} />
+              <IngredientBlock id="buns" title="Булки" list={buns} ref={bunRef} test='bunBlock' />
+              <IngredientBlock id="sauce" title="Соусы" list={sauce} ref={sauceRef} test='sauceBlock' />
+              <IngredientBlock id="main" title="Начинки" list={mainIngredients} ref={mainRef} test='mainBlock' />
             </>
           )}
           {ingredientsFaled && <p>Ошибка запрооса</p>}

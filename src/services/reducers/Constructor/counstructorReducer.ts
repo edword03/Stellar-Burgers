@@ -1,11 +1,11 @@
-import { IGetIngredients } from '../../types';
+import { IGetIngredients } from '../../../types';
 import {
   ADD_ITEM,
   REMOVE_ITEM,
   ADD_BUN,
   MOVE_ITEM,
   CLEAR_CONSTRUCTOR,
-} from '../actions/constructorAction';
+} from '../../actions/constructorAction';
 
 interface IConstructoItems extends IGetIngredients {
   itemId: string;
@@ -13,7 +13,7 @@ interface IConstructoItems extends IGetIngredients {
 
 interface IActionType {
   type: string;
-  payload: any;
+  payload?: any;
   isLocked?: boolean;
 }
 

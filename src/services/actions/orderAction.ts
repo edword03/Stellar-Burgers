@@ -12,17 +12,16 @@ export const OPEN_MODAL_ORDER: 'OPEN_MODAL_ORDER' = 'OPEN_MODAL_ORDER'
 
 const apiUrl = `${process.env.REACT_APP_URL}/orders`;
 
-const sendDataRequest = (): IOrderRequest => ({
+export const sendDataRequest = (): IOrderRequest => ({
   type: SEND_DATA_REQUEST,
 });
 
-const sendDataSuccess = (data: IOrderRequestBody): IOrderSuccess => ({
+export const sendDataSuccess = (data: IOrderRequestBody): IOrderSuccess => ({
   type: SEND_DATA_SUCCESS,
-  order: data.order.number,
   orderBody: data,
 });
 
-const sendDataFailed = (): IOrderFailed => ({
+export const sendDataFailed = (): IOrderFailed => ({
   type: SEND_DATA_FAILED,
 });
 

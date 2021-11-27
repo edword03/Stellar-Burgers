@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
-import { counstructorReducer } from './counstructorReducer';
-import { ingredientsReducer } from './ingredientReducer';
-import { detailsReducer } from './detailsReducer';
-import { orderReducer } from './orderReducer';
-import { userReducer } from './userReducer';
-import { wsReducer } from './wsReducer';
-import { feedModalReducer } from './feedModalReducer';
+import { counstructorReducer } from './Constructor/counstructorReducer';
+import { ingredientsReducer } from './Ingredients/ingredientReducer';
+import { detailsReducer } from './Details/detailsReducer';
+import { orderReducer } from './Order/orderReducer';
+import { userReducer } from './User/userReducer';
+import { wsReducer } from './Websocket/wsReducer';
+import { feedModalReducer } from './FeedModal/feedModalReducer';
 
 export const rootReducer = combineReducers({
   ingredients: ingredientsReducer,

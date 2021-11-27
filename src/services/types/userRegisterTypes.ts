@@ -27,4 +27,4 @@ export interface IUserFailed {
   type: typeof USER_FAILED,
 }
 
-export type IUserActions = IUserRequest | IUserSuccess | IUserFailed | IUserLogout | IResetPass
+export type IUserActions = IUserRequest | IUserSuccess | IUserFailed | IUserLogout | IResetPass | {type: null}

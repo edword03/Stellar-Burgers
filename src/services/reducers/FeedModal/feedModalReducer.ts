@@ -1,7 +1,7 @@
 export const OPEN_FEED_MODAL: 'OPEN_FEED_MODAL' = 'OPEN_FEED_MODAL';
 export const CLOSE_FEED_MODAL: 'CLOSE_FEED_MODAL' = 'CLOSE_FEED_MODAL';
 
-interface IFeedType {
+export interface IFeedType {
   ingredients: Array<string>;
   _id?: string;
   status: 'done' | 'pending' | 'created' | '';
@@ -20,7 +20,12 @@ interface ICloseFeed {
   type: typeof CLOSE_FEED_MODAL;
 }
 
-type TActionFeedModal = IOpenFeed | ICloseFeed;
+interface IInitialAction {
+  type: '',
+  payload: null
+}
+
+type TActionFeedModal = IOpenFeed | ICloseFeed | IInitialAction;
 
 interface IInitialState {
   currentFeed: IFeedType;

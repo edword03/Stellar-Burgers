@@ -37,4 +37,4 @@ interface WSSend {
   payload: any
 }
 
-export type TWsActions = WSOpen | WSClose | WSError | WSMessage | WSSuccess | WSSend
+export type TWsActions = WSOpen | WSClose | WSError | WSMessage | WSSuccess | WSSend | {type: null, payload: null}

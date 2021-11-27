@@ -1,4 +1,4 @@
-import { IWSMessageBody } from '../../types';
+import { IWSMessageBody } from '../../../types';
 import {
   WS_OPEN,
   WS_MESSAGE,
@@ -6,14 +6,14 @@ import {
   WS_CLOSE,
   TWsActions,
   WS_SUCCESS,
-} from '../actions/wsAction';
+} from '../../actions/wsAction';
 
 interface IInitialStateWS extends IWSMessageBody {
   isConection: boolean;
   error?: boolean;
 }
 
-const initialState: IInitialStateWS = {
+export const initialState: IInitialStateWS = {
   isConection: false,
   orders: [],
   total: 0,

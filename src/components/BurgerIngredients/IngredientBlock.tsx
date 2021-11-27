@@ -7,14 +7,15 @@ interface IIngredientBlock {
   list: Array<any>;
   title: string;
   id: string;
+  test: string
 }
 
 export const IngredientBlock = React.forwardRef<HTMLDivElement, IIngredientBlock>(
-  ({ list = [], title, id }, ref) => {
+  ({ list = [], title, id, test }, ref) => {
     const location = useLocation();
 
     return (
-      <div className={`mt-10 mb-10`}>
+      <div className={`mt-10 mb-10`} id={test}>
         <h3 className={`mb-6 text text_type_main-medium`} id={id} ref={ref}>
           {title}
         </h3>

@@ -23,7 +23,7 @@ import { AppHeader } from '../AppHeader';
 
 import { CLOSE_MODAL } from '../../services/actions/modalAction';
 import { OrderInfo } from '../OrderInfo';
-import { CLOSE_FEED_MODAL } from '../../services/reducers/feedModalReducer';
+import { CLOSE_FEED_MODAL } from '../../services/reducers/FeedModal/feedModalReducer';
 import { getCookie } from '../../utils/cookie';
 
 type TLocation = {
